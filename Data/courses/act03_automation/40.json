@@ -1,0 +1,15 @@
+{
+  "id": "40", "title": "计数器",
+  "scene": { "narrative": "老陈指着产线末端的计数器显示屏：\"今天做了多少件？每经过一个工件，光电开关触发一次（线圈 10 短暂闭合），计数器加一。PLC 寄存器 300 存了当前计数。下班时读计数、清零、记录产量。\"\n\n\"你要写一个生产计数程序：读当前计数 → 模拟 5 个工件经过（每次 WriteHoldingRegister 更新） → 读最终计数 → 打印产量。\"", "task": "1) 读寄存器 300 初始值 2) 用 for 循环模拟 5 个工件（每次把寄存器 300 值 +1 后写回） 3) 最后打印总产量。" },
+  "concepts": ["计数器", "累加写回", "生产计数"],
+  "factory": { "layout": "single_device", "plcRegisters": { "300": 0 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 生产计数器 — 每经过一个工件 +1\n\n// TODO 1: 读寄存器 300 的初始值\n\n\n\n// TODO 2: for 循环 5 次（5个工件经过）\n\n{\n    // TODO 3: 把当前值 +1，写回寄存器 300\n\n\n\n    // TODO 4: Print 当前生产数量\n\n}\n\n// TODO 5: 打印最终产量\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "ushort count = Plc.ReadHoldingRegister(300); for 循环里 count++; Plc.WriteHoldingRegister(300, count);" },
+    { "level": 2, "text": "Final output: Print($\"今日产量: {count} 件\");" },
+    { "level": 3, "text": "ushort count = Plc.ReadHoldingRegister(300);\nPrint($\"初始计数: {count}\");\nfor (int i = 0; i < 5; i++)\n{\n    count++;\n    Plc.WriteHoldingRegister(300, count);\n    Print($\"+1 → {count} 件\");\n}\nPrint($\"今日总产量: {count} 件\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "总产量" },
+  "achievement": { "id": "counter", "name": "生产计数", "description": "第一次实现 PLC 生产计数器" }
+}

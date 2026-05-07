@@ -1,0 +1,15 @@
+{
+  "id": "56", "title": "程序要一直跑不能崩",
+  "scene": { "narrative": "系统要 7×24 小时运行。任何一个没处理的异常都能让整个程序崩溃——这在工业现场是灾难。老陈严肃地说：\"工业软件的底线——所有可能出错的地方都要包 try/catch。异常被接住了就记录下来继续跑，不能让它冒出去。你写一个 RobustRead 方法，把读 PLC、读串口、所有操作都保护起来，任何一个失败都不影响其他操作。\"", "task": "写一个采集 5 台设备的循环。每台设备读取用 try/catch 保护。用 ushort 数组 {100, 999, 101, 888, 102} 模拟——其中 999 和 888 会因为寄存器不存在而返回 0（模拟异常）。catch 捕获后打印失败，但 continue 继续下一台。" },
+  "concepts": ["容错加固", "try/catch 全覆盖", "7x24可靠性"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 255, "101": 300, "102": 280 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 每台设备独立保护，一个失败不影响其他\n\n// TODO 1: 地址数组 {100, 999, 101, 888, 102}\n\n\n// TODO 2: for 循环遍历\n\n{\n    // TODO 3: try-catch 包裹每次读取\n    //   try: 读寄存器 → Print 成功\n    //   catch: Print \"设备X失败\" → continue\n\n\n\n\n}\n\nPrint(\"全部采集完成（部分失败不影响）\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "try { var v = Plc.ReadHoldingRegister(addr); Print($\"设备{addr}: {v}\"); } catch { Print($\"设备{addr}: 失败\"); }" },
+    { "level": 2, "text": "即使有设备失败，循环继续。最终打印'全部采集完成'证明程序没崩。" },
+    { "level": 3, "text": "int[] addrs = { 100, 999, 101, 888, 102 };\nint ok = 0, fail = 0;\nforeach (var a in addrs) {\n    try {\n        var v = Plc.ReadHoldingRegister(a);\n        Print($\"设备{a}: OK({v})\");\n        ok++;\n    }\n    catch {\n        Print($\"设备{a}: 失败\");\n        fail++;\n    }\n}\nPrint($\"全部采集完成（成功{ok}, 失败{fail}）\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "全部采集完成" },
+  "achievement": { "id": "robust", "name": "容错加固", "description": "第一次实现全操作 try/catch 加固" }
+}

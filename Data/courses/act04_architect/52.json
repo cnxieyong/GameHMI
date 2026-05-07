@@ -1,0 +1,15 @@
+{
+  "id": "52", "title": "设备配置化",
+  "scene": { "narrative": "每次加新设备都要改代码、重新编译、重新部署——太慢了。老陈说：\"把设备参数放到配置里！用一个 DeviceConfig 类代表设备的配置信息（类型、名称、参数），把多个 DeviceConfig 放进数组。程序启动时遍历配置数组，根据配置创建对应设备。以后加设备只改配置数据，不用改代码。\"", "task": "定义 DeviceConfig 类（Type, Name, Param）。创建 3 条配置数据放进数组。写一个 CreateDevice 方法，根据 Type 创建对应设备实例并打印设备信息。遍历配置数组创建所有设备。" },
+  "concepts": ["配置驱动", "工厂方法", "数据与代码分离"],
+  "factory": { "layout": "single_device", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "设备配置测试", "temp": 25.5 }] },
+  "template": "// 配置驱动——数据定义设备，不改代码\n\n// TODO 1: 定义 DeviceConfig 类\n//   string Type, string Name, double Param\n\nclass DeviceConfig\n{\n\n\n\n\n}\n\n// TODO 2: 创建3条配置，放入数组\n\n\n\n\n\n\n\n// TODO 3: 写 CreateDevice(DeviceConfig cfg) 方法\n//   if Type==\"TempSensor\" → Print 名称+温度参数\n//   if Type==\"Motor\" → Print 名称+速度参数\n\n{\n\n\n\n\n\n\n}\n\n// TODO 4: foreach 遍历配置数组，调用 CreateDevice\n\n{\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "class DeviceConfig { public string Type; public string Name; public double Param; }" },
+    { "level": 2, "text": "CreateDevice: if (cfg.Type == \"TempSensor\") Print($\"创建温度传感器: {cfg.Name}, 量程{cfg.Param}°C\");" },
+    { "level": 3, "text": "class DeviceConfig { public string Type; public string Name; public double Param; }\n\nvar configs = new DeviceConfig[] {\n    new DeviceConfig { Type=\"TempSensor\", Name=\"烘干箱\", Param=100 },\n    new DeviceConfig { Type=\"Motor\", Name=\"传送带\", Param=3000 },\n    new DeviceConfig { Type=\"TempSensor\", Name=\"冷却塔\", Param=50 }\n};\n\nvoid CreateDevice(DeviceConfig c) {\n    if (c.Type==\"TempSensor\") Print($\"温度传感器: {c.Name}, 量程{c.Param}°C\");\n    else if (c.Type==\"Motor\") Print($\"电机: {c.Name}, 最高{c.Param}RPM\");\n}\n\nforeach (var c in configs) CreateDevice(c);" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "冷却塔" },
+  "achievement": { "id": "config_driven", "name": "配置驱动", "description": "第一次实现配置驱动的设备管理" }
+}

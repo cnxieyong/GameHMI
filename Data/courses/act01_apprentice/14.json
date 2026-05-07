@@ -1,0 +1,31 @@
+{
+  "id": "14",
+  "title": "别让程序崩溃",
+  "scene": {
+    "narrative": "\"出大事了！\"小李脸色煞白地跑过来，\"我就多按了个回车，整个监控程序全崩了！\"\n\n老陈叹了口气：\"这就是不防错的结果。真实世界的数据什么幺蛾子都有——空字符串、乱码、格式错误。你不能假设数据一定是干净的。每次 Parse 都可能炸，得用 try/catch 兜底。\"\n\n\"try 里面放可能出错的代码，catch 里面写如果出错了该怎么办。这样程序遇到坏数据也不会崩，而是优雅地处理掉。\"",
+    "task": "用一个 string 数组存了 5 个传感器数据（包含一个非法值 \"N/A\"），遍历数组，用 try/catch 对每个值尝试 double.Parse，成功就打印，失败就打印\"数据异常，跳过\"。"
+  },
+  "concepts": ["try/catch", "异常处理", "容错", "FormatException"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.5 }
+    ]
+  },
+  "template": "// 传感器数据数组 — 注意第三个是 N/A，不能被 Parse\nstring[] rawData = { \"25.5\", \"30.2\", \"N/A\", \"28.0\", \"999\" };\n\n// TODO 1: 用 foreach 遍历 rawData\n\n{\n    // TODO 2: 在 try 块里尝试 double.Parse\n    \n    {\n        \n        \n        // 如果 Parse 成功，Print 解析后的值\n        \n    }\n    // TODO 3: catch 块 — 抓住异常\n    \n    {\n        // 打印 \"数据异常，跳过: \" + 原始数据\n        \n    }\n}\n\nPrint(\"数据处理完毕\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "try { ... } catch (Exception ex) { ... }。大括号别漏。foreach 里对每个 raw 用 double.Parse，成功了就 Print，失败了进 catch。" },
+    { "level": 2, "text": "catch 里: Print($\"数据异常，跳过: {raw}\"); 只要有一个 catch 块就能接住所有异常。" },
+    { "level": 3, "text": "string[] rawData = { \"25.5\", \"30.2\", \"N/A\", \"28.0\", \"999\" };\nforeach (var raw in rawData)\n{\n    try\n    {\n        double val = double.Parse(raw);\n        Print($\"解析成功: {val}\");\n    }\n    catch\n    {\n        Print($\"数据异常，跳过: {raw}\");\n    }\n}\nPrint(\"数据处理完毕\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "数据处理完毕"
+  },
+  "achievement": {
+    "id": "first_trycatch",
+    "name": "容错处理",
+    "description": "第一次用 try/catch 保护程序不崩溃"
+  }
+}

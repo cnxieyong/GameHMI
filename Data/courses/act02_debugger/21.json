@@ -1,0 +1,32 @@
+{
+  "id": "21",
+  "title": "设备不响应了",
+  "scene": {
+    "narrative": "车间里的温控表突然没反应了，工控机屏幕上显示\"通讯失败\"。师傅老陈检查了一圈：\"网线插着呢，电源灯也亮着……可能是串口通讯断了。你直接连设备看看——拿串口线接到 COM3，用代码打开串口跟设备对话。\"\n\n老陈递给你一根 RS232 转 USB 线：\"记住流程：先建一个 SerialPort 对象，设置端口号和波特率，然后 Open()。打开之后就能收发数据了。\"",
+    "task": "使用 Serial 对象（已经创建好了，端口 COM3，波特率 9600），调用 Open() 打开串口，然后用 ReadLine() 读取设备返回的数据，Print 出来。"
+  },
+  "concepts": ["SerialPort", "Open()", "ReadLine()", "波特率"],
+  "factory": {
+    "layout": "single_device",
+    "serialResponse": "OK,TEMP=25.5,HUM=60\nSTATUS=NORMAL\n",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.5 }
+    ]
+  },
+  "template": "// 设备通讯断了，用串口直接连接设备\n// Serial 对象已就绪: COM3, 9600 波特率\n\n// TODO 1: 打开串口连接\n\n\n// TODO 2: 用 ReadLine() 读取设备发来的数据\n\n\n// TODO 3: Print 读取到的数据\n\n\n// TODO 4: 再读一次，设备可能发了两行数据\n\n\n\n// TODO 5: 用完后 Close() 关闭串口\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "三步：Serial.Open() → var data = Serial.ReadLine() → Print(data)。串口要先打开才能读写。" },
+    { "level": 2, "text": "Serial.Open();\nvar line1 = Serial.ReadLine();\nPrint($\"收到: {line1}\");\nvar line2 = Serial.ReadLine();\nPrint($\"收到: {line2}\");\nSerial.Close();" },
+    { "level": 3, "text": "Serial.Open();\n\nvar line1 = Serial.ReadLine();\nPrint($\"收到: {line1}\");\n\nvar line2 = Serial.ReadLine();\nPrint($\"收到: {line2}\");\n\nSerial.Close();\n\nPrint(\"串口通讯完成\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "通讯完成"
+  },
+  "achievement": {
+    "id": "first_serial",
+    "name": "串口初探",
+    "description": "第一次通过串口与设备建立通讯"
+  }
+}

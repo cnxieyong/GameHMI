@@ -1,0 +1,15 @@
+{
+  "id": "45", "title": "生产数据要存档",
+  "scene": { "narrative": "厂长要看这个月的生产报表——每天产量、良品率、设备运行时间都得有记录。\"数据不能光跑在内存里，得存下来。以后用 SQLite 存数据库里，现在先用结构化的方式：定义 ProductionRecord 类，把每条产量数据存到 List 里，最后遍历打印报表。这就是数据库'表'和'行'的概念。\"", "task": "定义 ProductionRecord 类（日期/产量/良品数）。创建 3 条模拟记录放进 List，foreach 遍历打印报表，最后统计总产量和总良品率。" },
+  "concepts": ["数据记录", "List存档", "报表统计", "SQL概念入门"],
+  "factory": { "layout": "single_device", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 生产数据存档 — 类 → List → 报表\n\n// TODO 1: 定义 ProductionRecord 类\n//   字段: string Date; int Total; int Good;\n\nclass ProductionRecord\n{\n\n\n\n\n}\n\n// TODO 2: 创建 3 条记录 (\"5/1\", 1000, 985), (\"5/2\", 1200, 1180), (\"5/3\", 1100, 1090)\n\n\n\n\n\n\n// TODO 3: 存入 List<ProductionRecord>，foreach 打印每条\n//   格式: \"日期 X月X日: 产量X件, 良品X件\"\n\n{\n\n\n\n}\n\n// TODO 4: 统计总产量和总良品率\n\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "class ProductionRecord { public string Date; public int Total; public int Good; public ProductionRecord(string d, int t, int g) { Date=d; Total=t; Good=g; } }" },
+    { "level": 2, "text": "统计: int totalAll = 0, goodAll = 0; foreach里累加。良品率 = (double)goodAll / totalAll * 100。" },
+    { "level": 3, "text": "class ProductionRecord { public string Date; public int Total; public int Good; public ProductionRecord(string d, int t, int g) { Date=d; Total=t; Good=g; } }\n\nvar records = new List<ProductionRecord>();\nrecords.Add(new ProductionRecord(\"5/1\", 1000, 985));\nrecords.Add(new ProductionRecord(\"5/2\", 1200, 1180));\nrecords.Add(new ProductionRecord(\"5/3\", 1100, 1090));\n\nint t = 0, g = 0;\nforeach (var r in records) { t += r.Total; g += r.Good; Print($\"{r.Date}: 产量{r.Total} 良品{r.Good}\"); }\nPrint($\"总产量: {t}, 良品率: {g*100.0/t:F1}%\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "良品率" },
+  "achievement": { "id": "data_archive", "name": "数据存档", "description": "第一次用结构化数据生成报表" }
+}

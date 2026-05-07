@@ -1,0 +1,32 @@
+{
+  "id": "10",
+  "title": "配方参数",
+  "scene": {
+    "narrative": "车间接到两个订单：A产品需要在85°C烘干，B产品需要120°C。老陈说：\"每个产品有不同的工艺参数，不能让人随便改温度——设错了产品就报废了。你给烘干箱类加个保护机制：温度设定值在创建时通过构造函数一次性定死，之后谁敢乱改编译就报错。还有一个只读属性 TargetTemp 用来查看设定值。\"",
+    "task": "改进 DryerBox 类：1) 加一个带参数的构造函数，传入目标温度 2) 加一个只读属性 TargetTemp（只有 get 没有 set）3) 加一个 CurrentTemp 属性（可读写）4) 创建两个产品实例并打印。"
+  },
+  "concepts": ["属性 get/set", "构造函数", "只读属性", "封装"],
+  "factory": {
+    "layout": "multi_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer_a", "label": "A产品线", "temp": 85.0 },
+      { "type": "DryerBox", "id": "dryer_b", "label": "B产品线", "temp": 120.0 }
+    ]
+  },
+  "template": "// 改进 DryerBox 类: 加入构造函数和属性\n\n// TODO 1: 定义 class DryerBox，包含:\n//   - 只读属性 TargetTemp { get; } (只能读取，不能修改)\n//   - 可读写属性 CurrentTemp { get; set; }\n//   - 构造函数 DryerBox(double targetTemp)\n//     把 targetTemp 参数赋给 TargetTemp\n\n{\n\n\n\n}\n\n// TODO 2: 用构造函数创建 A 产品实例 (85°C)\n\n\n// TODO 3: 用构造函数创建 B 产品实例 (120°C)\n\n\n// TODO 4: 分别设置两个实例的 CurrentTemp\n//   (模拟当前实际温度接近目标温度)\n\n\n\n// TODO 5: Print 两个产品的目标温度和当前温度\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "只读属性: public double TargetTemp { get; }。构造函数: public DryerBox(double target) { TargetTemp = target; }" },
+    { "level": 2, "text": "创建: var productA = new DryerBox(85); 设置当前温度: productA.CurrentTemp = 84.5;" },
+    { "level": 3, "text": "class DryerBox\n{\n    public double TargetTemp { get; }\n    public double CurrentTemp { get; set; }\n    public DryerBox(double target) { TargetTemp = target; }\n}\n\nvar productA = new DryerBox(85);\nproductA.CurrentTemp = 84.5;\nvar productB = new DryerBox(120);\nproductB.CurrentTemp = 118.2;\n\nPrint($\"A产品 目标:{productA.TargetTemp}°C 当前:{productA.CurrentTemp}°C\");\nPrint($\"B产品 目标:{productB.TargetTemp}°C 当前:{productB.CurrentTemp}°C\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "目标"
+  },
+  "achievement": {
+    "id": "first_property",
+    "name": "属性封装",
+    "description": "第一次用属性 get/set 保护数据"
+  }
+}

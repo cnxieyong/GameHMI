@@ -1,0 +1,15 @@
+{
+  "id": "B3", "title": "极速挑战",
+  "scene": { "narrative": "\"20台设备全部轮询一遍，谁最快？\" 老板搞了个性能擂台。优化你的代码——减少不必要的变量声明、合并循环、用数组地址技巧。目标是：用最高效的代码遍历 20 个 PLC 寄存器并统计正常/异常数量。不是比运行速度（都很快），而是比代码逻辑的简洁程度。", "task": "20台设备（地址 100-119）。用最简练的 for 循环一次性完成遍历+判断+计数。不声明多余变量，用地址计算代替查表。" },
+  "concepts": ["性能优化", "地址计算", "代码效率"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100":250,"101":280,"102":9999,"103":260,"104":300,"105":270,"106":255,"107":310,"108":265,"109":275,"110":250,"111":290,"112":260,"113":9999,"114":280,"115":270,"116":255,"117":300,"118":265,"119":285 }, "devices": [{ "type": "DryerBox", "id": "d", "label": "20台设备", "temp": 25.5 }] },
+  "template": "// 20台设备极速巡检 —— 一行代码完成地址计算!\n// 地址 = 100 + i\n\n// TODO 1: int ok=0, bad=0\n\n\n// TODO 2: for (i=0; i<20; i++) 一行完成: 读寄存器(100+i) → 判断 → 计数\n\n{\n\n}\n\n// TODO 3: 打印结果\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "for (int i = 0; i < 20; i++) { var v = Plc.ReadHoldingRegister(100 + i); if (v > 5000) bad++; else ok++; }" },
+    { "level": 2, "text": "不需要数组！地址用 100+i 直接算。这是最简练的写法。" },
+    { "level": 3, "text": "int ok=0, bad=0;\nfor (int i=0; i<20; i++) {\n    var v = Plc.ReadHoldingRegister(100+i);\n    if (v>5000) bad++; else ok++;\n}\nPrint($\"20台设备: 正常{ok}, 异常{bad}\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "20台" },
+  "achievement": { "id": "speedster", "name": "极速巡检", "description": "用最高效的代码完成20台设备巡检" }
+}

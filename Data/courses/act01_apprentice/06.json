@@ -1,0 +1,31 @@
+{
+  "id": "06",
+  "title": "多温度点管理",
+  "scene": {
+    "narrative": "\"好消息！\"老陈兴冲冲地走过来，\"厂长批了预算，烘干箱从3个温区升级到5个——上、中上、中、中下、下。每个温区独立监控。\"\n\n你刚要改数组大小，老陈按住你：\"等等，下周可能还要加到8个……下个月可能要10个。数组大小是死的，你得用 List——想加几个加几个，不用提前定大小。\"",
+    "task": "把 SensorTemps 数组里的数据转存到一个 List<double> 里，然后用 foreach 遍历 List，打印每个温区的温度，并找出最高温度。"
+  },
+  "concepts": ["List<T>", ".Add()", "foreach", "Count"],
+  "factory": {
+    "layout": "multi_zone",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "五温区烘干箱", "temp": 32.0 }
+    ]
+  },
+  "template": "// SensorTemps 数组有5个温区的温度\n// 你需要把它们转存到 List<double> 里，方便以后动态增减\n\n// TODO 1: 创建一个 List<double>，叫 temps\n\n\n// TODO 2: 用 for 循环把 SensorTemps 的每个值 .Add() 到 temps 里\n\n{\n\n}\n\n// TODO 3: 用 foreach 遍历 temps，Print 每个温度\n\n{\n\n}\n\n// TODO 4: 声明一个 double max = 0，在 foreach 里用 if 更新最大值\n// 循环结束后 Print 最高温度\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "创 List: var temps = new List<double>(); 添加: temps.Add(SensorTemps[i]); 遍历: foreach (var t in temps)" },
+    { "level": 2, "text": "for 循环里 temps.Add(SensorTemps[i])。foreach 里 Print($\"温区温度: {t}°C\")。找最大值: if (t > max) max = t;" },
+    { "level": 3, "text": "var temps = new List<double>();\nfor (int i = 0; i < SensorTemps.Length; i++)\n    temps.Add(SensorTemps[i]);\n\nforeach (var t in temps)\n    Print($\"温区温度: {t}°C\");\n\ndouble max = 0;\nforeach (var t in temps)\n    if (t > max) max = t;\nPrint($\"最高温度: {max}°C\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "最高温度"
+  },
+  "achievement": {
+    "id": "first_list",
+    "name": "动态集合",
+    "description": "第一次用 List 管理动态数据"
+  }
+}

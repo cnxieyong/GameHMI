@@ -1,0 +1,15 @@
+{
+  "id": "47", "title": "实时数据趋势",
+  "scene": { "narrative": "控制室的大屏幕上显示着温度实时曲线。老陈指着曲线：\"你看这条线——温度在 28-32°C 之间波动，整体趋势平稳。实时曲线让你一眼看出设备状态变化。虽然我们不做图形，但你可以用数字模拟曲线：连续采集 10 次数据，每次计算和上次的差值，判断是上升还是下降。\"", "task": "用 for 循环模拟连续采集 10 次 PLC 温度数据（寄存器 100 每次递增 5）。记录每次的温度和变化趋势（↑上升 / ↓下降 / →持平），最后打印趋势摘要。" },
+  "concepts": ["趋势分析", "差值计算", "连续采集"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 250 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.0 }] },
+  "template": "// 连续采集10次，分析温度趋势\n\n// TODO 1: 变量 prev = 0, ups = 0, downs = 0\n\n\n\n// TODO 2: for 循环 10 次\n\n{\n    // TODO 3: 读当前值，计算差值\n\n\n    // TODO 4: 打印趋势箭头（↑ ↓ →），累计上升/下降次数\n\n\n\n    // TODO 5: 把当前值 +5 写回寄存器（模拟温度上升）\n\n\n}\n\n// TODO 6: 打印趋势摘要\n\n\n\nPrint(\"趋势分析完成\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "curr > prev → \"↑\" ups++; curr < prev → \"↓\" downs++; curr == prev → \"→\"" },
+    { "level": 2, "text": "每次读完把 curr+5 写回去，下次就更高，模拟持续升温。" },
+    { "level": 3, "text": "double prev = 0; int ups = 0, downs = 0;\nfor (int i = 0; i < 10; i++)\n{\n    double curr = Plc.ReadHoldingRegister(100) / 10.0;\n    string trend = curr > prev ? \"↑\" : curr < prev ? \"↓\" : \"→\";\n    if (curr > prev) ups++; else if (curr < prev) downs++;\n    Print($\"[{i}] {curr:F1}°C {trend}\");\n    prev = curr;\n    Plc.WriteHoldingRegister(100, (ushort)((curr + 0.5) * 10));\n}\nPrint($\"上升{ups}次, 下降{downs}次\");\nPrint(\"趋势分析完成\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "趋势分析完成" },
+  "achievement": { "id": "trend", "name": "趋势分析", "description": "第一次实现连续数据趋势分析" }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "17",
+  "title": "传送带速度可调",
+  "scene": {
+    "narrative": "老陈拿着两种规格的电机说明书：\"这台日本电机用转速（RPM），那台国产电机用百分比。你得写一个 SetSpeed 方法，两种参数都能接受——传整数就按 RPM 设，传百分数就换算成 RPM。\"\n\n\"C# 允许同一个方法名写多个版本，只要参数类型不同，这叫方法重载。编译器会根据你传的参数类型自动选正确的版本。\"",
+    "task": "定义一个 Motor 类，写两个 SetSpeed 方法：1) SetSpeed(int rpm) 直接设转速，2) SetSpeed(double percent) 把百分比换算成 RPM（最大 3000）。两个都打印设定后的转速。"
+  },
+  "concepts": ["方法重载 overload", "同名方法不同参数", "int vs double"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.5 }
+    ]
+  },
+  "template": "// 同一个方法名，两种参数类型 — 方法重载\n\n// TODO 1: 定义 Motor 类，包含:\n//   - int MaxRPM = 3000\n//   - void ShowSpeed(int rpm) 打印转速\n\n\n\n\n\n// TODO 2: 写 SetSpeed(int rpm) — 直接用 rpm 值\n//   调用 ShowSpeed(rpm)\n\n{\n\n}\n\n// TODO 3: 写 SetSpeed(double percent) — 把百分比换算成 RPM\n//   int rpm = (int)(MaxRPM * percent / 100.0);\n//   调用 ShowSpeed(rpm)\n\n{\n\n\n}\n\n// TODO 4: 测试 — 创建 Motor，先传整数 1500，再传百分数 50.0\n\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "两个 SetSpeed 方法都叫同一个名字，区别在参数: 一个是 (int rpm)，一个是 (double percent)。调用时 C# 自动选。" },
+    { "level": 2, "text": "void SetSpeed(int rpm) { ShowSpeed(rpm); } — void SetSpeed(double percent) { int rpm = (int)(3000 * percent / 100); ShowSpeed(rpm); }" },
+    { "level": 3, "text": "class MyMotor\n{\n    int MaxRPM = 3000;\n    public int CalcSpeed(int rpm) { return rpm; }\n    public int CalcSpeed(double percent)\n    {\n        return (int)(MaxRPM * percent / 100.0);\n    }\n}\n\nvar m = new MyMotor();\nint s1 = m.CalcSpeed(1500);\nint s2 = m.CalcSpeed(50.0);\nPrint($\"转速1: {s1} RPM\");\nPrint($\"转速2: {s2} RPM\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "1500"
+  },
+  "achievement": {
+    "id": "first_overload",
+    "name": "方法重载",
+    "description": "第一次用同名方法处理不同类型参数"
+  }
+}

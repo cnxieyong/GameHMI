@@ -1,0 +1,31 @@
+{
+  "id": "02",
+  "title": "温度好像有点高",
+  "scene": {
+    "narrative": "老陈皱着眉头站在烘干箱前，手背贴在箱体上试温：\"不对劲……刚才温度多少来着？现在好像又高了。光靠手摸可不行，你得把数值记下来。\"\n\n他从口袋里掏出一本皱巴巴的工作日志：\"看到没？好记性不如烂笔头。每次巡检都要记下当时的温度和状态，这样才能知道设备是不是在正常范围内波动。\"\n\n\"在代码里，'记下来'就是用一个变量——先声明一个叫 t 的变量把当前温度存进去，然后再打印出来。\"",
+    "task": "声明一个 double 类型的变量 t，把 SensorTemp 的值存进去，然后用 Print 输出。"
+  },
+  "concepts": ["变量声明", "double 类型", "$ 字符串插值"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.7 }
+    ]
+  },
+  "template": "// 第一步：把当前温度存到变量里\ndouble t = SensorTemp;\n\n// 第二步：用 Print 把变量值输出\n// TODO: 写一行 Print，把 t 的值显示出来\n// 格式: 当前烘干箱温度: XX°C\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "你已经有了变量 t。Print($\"...\") 的 $ 和大括号 {} 可以把变量值嵌入到文字中" },
+    { "level": 2, "text": "像这样:\nPrint($\"当前烘干箱温度: {t}°C\");\n\n注意：大括号里写变量名 t，不是 SensorTemp" },
+    { "level": 3, "text": "double t = SensorTemp;\nPrint($\"当前烘干箱温度: {t}°C\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "°C"
+  },
+  "achievement": {
+    "id": "first_var",
+    "name": "变量新手",
+    "description": "第一次用变量存储温度数据"
+  }
+}

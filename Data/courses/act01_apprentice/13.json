@@ -1,0 +1,31 @@
+{
+  "id": "13",
+  "title": "五花八门的数据格式",
+  "scene": {
+    "narrative": "老陈把一叠设备说明书摔在桌上：\"你看，不同厂家的传感器传回来的格式完全不一样——松下的报 '85.5°C'，西门子的报 'TEMP:32.0'，还有的直接报 'temp=28.7C'。你要能统一处理，把数字从这些字符串里抠出来。\"\n\n\"这就要用 string 的方法——IndexOf 找位置、Substring 截取、Replace 替换、Split 切开。组合起来用。\"",
+    "task": "给了三个不同格式的字符串，分别用不同的 string 方法提取出温度数值，转成 double，打印出来。"
+  },
+  "concepts": ["string.IndexOf()", "Substring()", "Replace()", "Split()", "字符串处理"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.5 }
+    ]
+  },
+  "template": "// 三个不同厂家的传感器，三种数据格式\nstring raw1 = \"85.5°C\";        // 松下：去掉末尾的 °C\nstring raw2 = \"TEMP:32.0\";     // 西门子：冒号后面才是数字\nstring raw3 = \"temp=28.7C\";    // 杂牌：等号后面，C前面\n\n// TODO 1: 处理 raw1 — 用 Replace 把 \"°C\" 替换成空字符串 \"\"，再 Parse\n\n\n\n// TODO 2: 处理 raw2 — 用 Split(':') 按冒号切开，取第二部分 [1]，再 Parse\n\n\n\n// TODO 3: 处理 raw3 — 用 Replace(\"temp=\",\"\").Replace(\"C\",\"\")，再 Parse\n\n\n\n// TODO 4: 把三个解析后的数字 Print 出来\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "Replace: raw1.Replace(\"°C\", \"\") 会把 °C 删掉。Split: raw2.Split(':') 返回一个数组，[0] 是 \"TEMP\"，[1] 是 \"32.0\"。" },
+    { "level": 2, "text": "var t1 = double.Parse(raw1.Replace(\"°C\", \"\")); var t2 = double.Parse(raw2.Split(':')[1]); var t3 = double.Parse(raw3.Replace(\"temp=\", \"\").Replace(\"C\", \"\"));" },
+    { "level": 3, "text": "string raw1 = \"85.5°C\";\nstring raw2 = \"TEMP:32.0\";\nstring raw3 = \"temp=28.7C\";\ndouble t1 = double.Parse(raw1.Replace(\"°C\", \"\"));\ndouble t2 = double.Parse(raw2.Split(':')[1]);\ndouble t3 = double.Parse(raw3.Replace(\"temp=\", \"\").Replace(\"C\", \"\"));\nPrint($\"传感器1: {t1}°C\");\nPrint($\"传感器2: {t2}°C\");\nPrint($\"传感器3: {t3}°C\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "传感器3"
+  },
+  "achievement": {
+    "id": "string_parse",
+    "name": "字符串解析",
+    "description": "第一次从不规则字符串中提取数据"
+  }
+}

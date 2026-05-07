@@ -1,0 +1,15 @@
+{
+  "id": "36", "title": "认识 PLC 和 Modbus",
+  "scene": { "narrative": "老陈带你来到电控柜前：\"这里面是 PLC——可编程逻辑控制器。产线上所有传感器和执行器都接在它上面。上位机和PLC之间用 Modbus 协议通讯：读保持寄存器（地址 100 开始）可以拿到传感器数据，读写线圈可以控制电机启停。\"\n\n\"Modbus 的核心概念：Holding Register（保持寄存器）存数值、Coil（线圈）存开关量。读用 ReadHoldingRegister(地址)，写用 WriteHoldingRegister(地址, 值)——单位是 ushort，0-65535。\"", "task": "PLC 的寄存器 100 存了温度值 255（= 25.5°C），寄存器 101 存了湿度值 600（= 60.0%）。用 ReadHoldingRegister 读取这两个值，转换后 Print 出来。" },
+  "concepts": ["PLC", "Modbus", "HoldingRegister", "ReadHoldingRegister"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 255, "101": 600 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// PLC 通过 Modbus 协议暴露数据\n// 寄存器 100 = 温度 × 10, 寄存器 101 = 湿度 × 10\n\n// TODO 1: 读取寄存器 100 的值，除以 10.0 得到实际温度\n\n\n\n// TODO 2: 读取寄存器 101 的值，除以 10.0 得到实际湿度\n\n\n\n// TODO 3: Print 温度和湿度\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "Plc.ReadHoldingRegister(100) 返回 ushort(0-65535)。实际值 = 寄存器值 / 10.0。" },
+    { "level": 2, "text": "double temp = Plc.ReadHoldingRegister(100) / 10.0; double hum = Plc.ReadHoldingRegister(101) / 10.0;" },
+    { "level": 3, "text": "double temp = Plc.ReadHoldingRegister(100) / 10.0;\ndouble hum = Plc.ReadHoldingRegister(101) / 10.0;\nPrint($\"PLC温度: {temp:F1}°C\");\nPrint($\"PLC湿度: {hum:F1}%\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "PLC温度" },
+  "achievement": { "id": "first_plc", "name": "PLC入门", "description": "第一次通过 Modbus 读取 PLC 数据" }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "16",
+  "title": "不同设备类型",
+  "scene": {
+    "narrative": "车间现在有烘干箱、电机、加热器三种设备。老陈说：\"每种设备操作不一样——烘干箱要看温度、电机要启停、加热器要开关。但它们有一个共同点：都需要巡检。\"\n\n\"C# 里用 interface 定义'合约'——规定实现这个接口的类必须有哪些方法。比如 ICheckable 接口要求一个 Check() 方法，烘干箱实现了就输出温度、电机实现了就输出转速。统一接口统一调用。\"",
+    "task": "定义一个 ICheckable 接口（有 void Check() 方法）。让 DryerBox、Motor、Heater 三个类都实现它。创建三个实例放进 List<ICheckable>，foreach 调用 Check()。"
+  },
+  "concepts": ["interface", "多态", "接口实现", ": ICheckable"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.5 }
+    ]
+  },
+  "template": "// 统一巡检接口 — 不管什么设备，都能 Check()\n\n// TODO 1: 定义 ICheckable 接口\n\n{\n\n}\n\n// TODO 2: DryerBox 实现 ICheckable，Check() 输出温度和状态\n\n\n{\n\n\n\n}\n\n// TODO 3: Motor 实现 ICheckable，Check() 输出运行状态\n\n\n{\n\n\n\n}\n\n// TODO 4: Heater 实现 ICheckable，Check() 输出开关状态\n\n\n{\n\n\n\n}\n\n// TODO 5: 创建三个实例\n\n\n\n\n// TODO 6: 放进 List<ICheckable>，foreach 统一调用 Check()\n\n\n{\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "接口: interface ICheckable { void Check(); }。实现: class DryerBox : ICheckable { public void Check() { Print($\"烘干箱温度: {SensorTemp}°C\"); } }" },
+    { "level": 2, "text": "Motor.Check() 里: Print($\"电机: {(MotorRunning ? \"运行中\" : \"已停止\")}\"); Heater.Check() 里: Print($\"加热器: {(HeaterOn ? \"开启\" : \"关闭\")}\");" },
+    { "level": 3, "text": "interface ICheckable { string GetStatus(); }\n\nclass DryerBox : ICheckable\n{ public string GetStatus() { return \"烘干箱正常\"; } }\n\nclass Motor : ICheckable\n{ public string GetStatus() { return \"电机正常\"; } }\n\nclass Heater : ICheckable\n{ public string GetStatus() { return \"加热器正常\"; } }\n\nvar devices = new List<ICheckable>();\ndevices.Add(new DryerBox());\ndevices.Add(new Motor());\ndevices.Add(new Heater());\n\nforeach (var d in devices)\n    Print(d.GetStatus());" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "加热器"
+  },
+  "achievement": {
+    "id": "first_interface",
+    "name": "面向接口编程",
+    "description": "第一次用接口实现多态调用"
+  }
+}

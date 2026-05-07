@@ -1,0 +1,18 @@
+{
+  "id": "41", "title": "多台 PLC 管理",
+  "scene": { "narrative": "车间有三段产线，每段有独立的 PLC。PLC-1 管烘干段（寄存器 100-199），PLC-2 管传送段（寄存器 200-299），PLC-3 管包装段（寄存器 300-399）。虽然我们只有一个 Plc 对象，但寄存器地址天然分区，你可以用 Dictionary 管理各段的配置。", "task": "用 Dictionary 存储三段产线的 PLC 寄存器起始地址。写一个 ReadAll() 方法遍历三个段，读每段的第一个寄存器，打印各段状态。" },
+  "concepts": ["多PLC管理", "地址分区", "Dictionary实践"],
+  "factory": { "layout": "multi_device", "plcRegisters": { "100": 255, "200": 300, "300": 128 }, "devices": [
+    { "type": "DryerBox", "id": "s1", "label": "烘干段PLC", "temp": 25.5 },
+    { "type": "DryerBox", "id": "s2", "label": "传送段PLC", "temp": 30.0 }
+  ]},
+  "template": "// 三段产线，三个PLC地址段\n\n// TODO 1: 创建 Dictionary<string, int>，存段名→起始寄存器地址\n\n\n\n\n// TODO 2: 写 ReadAll() 方法，遍历 Dictionary\n//   读每个段的第一个寄存器，打印段名和值\n\n{\n\n\n\n}\n\n// TODO 3: 调用 ReadAll()\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "var sections = new Dictionary<string, int>() { {\"烘干段\", 100}, {\"传送段\", 200}, {\"包装段\", 300} };" },
+    { "level": 2, "text": "foreach (var kv in sections) { var val = Plc.ReadHoldingRegister(kv.Value); Print($\"{kv.Key}: {val}\"); }" },
+    { "level": 3, "text": "var sections = new Dictionary<string, int>() { {\"烘干段\", 100}, {\"传送段\", 200}, {\"包装段\", 300} };\n\nvoid ReadAll() {\n    foreach (var s in sections)\n        Print($\"{s.Key}: 寄存器{s.Value}={Plc.ReadHoldingRegister(s.Value)}\");\n}\n\nReadAll();" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "包装段" },
+  "achievement": { "id": "multi_plc", "name": "多PLC管理", "description": "第一次用分区管理多台PLC" }
+}

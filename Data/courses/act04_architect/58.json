@@ -1,0 +1,15 @@
+{
+  "id": "58", "title": "统一协议接口",
+  "scene": { "narrative": "产线上混着 Modbus 设备、串口设备、TCP 设备——三种协议三种操作方式，代码越来越乱。老陈在白板上画：\"统一它们——定义一个 IDeviceProtocol 接口：Connect()、Read()、Write()、Disconnect()。不管底层是 Modbus 还是串口还是 TCP，上层调用都一样。这就是策略模式——封装变化，暴露统一接口。\"", "task": "定义 IDeviceProtocol 接口。实现两个类：ModbusProtocol（用 Plc 读写）和 SerialProtocol（用 Serial 读写）。创建两个实例，统一用接口方法操作。" },
+  "concepts": ["策略模式", "接口隔离", "协议统一"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 255 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 策略模式——不同协议，统一接口\n\n// TODO 1: 定义 IDeviceProtocol 接口\n//   void Connect(), string Read(), void Disconnect()\n\ninterface IDeviceProtocol\n{\n\n\n\n}\n\n// TODO 2: ModbusProtocol 实现接口: Connect/Read/Disconnect 用 Plc\n\n{\n\n\n\n\n\n\n\n}\n\n// TODO 3: SerialProtocol 实现接口: Connect/Read/Disconnect 用 Serial\n\n{\n\n\n\n\n\n\n\n}\n\n// TODO 4: 创建两个实例，放进 List<IDeviceProtocol>，foreach 调用 Connect→Read→Disconnect\n\n\n\n\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "interface IDeviceProtocol { void Connect(); string Read(); void Disconnect(); }" },
+    { "level": 2, "text": "Modbus 的 Read(): return $\"PLC:{Plc.ReadHoldingRegister(100)}\"; Serial 的 Read(): var d = Serial.ReadLine(); return d ?? \"null\";" },
+    { "level": 3, "text": "interface IDeviceProtocol { string Name { get; } string Read(); }\n\nclass ModbusProto : IDeviceProtocol {\n    public string Name => \"Modbus\";\n    public string Read() { return \"PLC data ok\"; }\n}\n\nclass SerialProto : IDeviceProtocol {\n    public string Name => \"Serial\";\n    public string Read() { return \"Serial data ok\"; }\n}\n\nvar devices = new List<IDeviceProtocol> { new ModbusProto(), new SerialProto() };\nforeach (var d in devices) {\n    Print($\"{d.Name}连接\");\n    Print(d.Read());\n    Print($\"{d.Name}断开\");\n}" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "Modbus断开" },
+  "achievement": { "id": "strategy", "name": "策略模式", "description": "第一次用策略模式统一不同协议接口" }
+}

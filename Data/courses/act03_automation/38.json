@@ -1,0 +1,15 @@
+{
+  "id": "38", "title": "传送带联动控制",
+  "scene": { "narrative": "产线上有个联动要求：光电开关（线圈 10）检测到工件 → 启动传送带电机（线圈 0）→ 2秒后启动烘干加热器（线圈 1）。这就是自动化中最典型的'传感器触发 → 执行器动作'。\"你需要同时读写 PLC——先读传感器状态，再根据状态控制执行器。\"", "task": "光电开关已触发（线圈10 = true）。写逻辑：if 线圈10=true，则启动线圈0（电机）和线圈1（加热器），Print '联动触发'。否则 Print '等待工件'。" },
+  "concepts": ["传感器联动", "条件控制", "自动化逻辑"],
+  "factory": { "layout": "single_device", "plcCoils": { "0": false, "1": false, "10": true }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 光电开关(线圈10)检测到工件 → 启动电机(线圈0)和加热器(线圈1)\n\n// TODO 1: 读取线圈 10 的值\n\n\n// TODO 2: 用 if 判断：如果线圈10 == true\n\n{\n    // TODO 3: 写线圈0和线圈1为 true\n\n\n\n    // TODO 4: Print \"联动触发\"\n\n}\nelse\n{\n    // TODO 5: Print \"等待工件\"\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "if (Plc.ReadCoil(10)) { Plc.WriteCoil(0, true); Plc.WriteCoil(1, true); Print(\"联动触发\"); }" },
+    { "level": 2, "text": "传感器触发后立即控制两个执行器。这就是自动化联动的核心逻辑。" },
+    { "level": 3, "text": "if (Plc.ReadCoil(10))\n{\n    Plc.WriteCoil(0, true);\n    Plc.WriteCoil(1, true);\n    Print(\"联动触发：光电→电机+加热器\");\n}\nelse\n    Print(\"等待工件\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "联动触发" },
+  "achievement": { "id": "automation", "name": "自动化联动", "description": "第一次实现传感器触发执行器的自动化联动" }
+}

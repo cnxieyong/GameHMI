@@ -1,0 +1,15 @@
+{
+  "id": "44", "title": "设备数据缓存",
+  "scene": { "narrative": "小李抱怨程序慢：\"每次都要读 PLC 寄存器，读 100 次就是 100 次 Modbus 通讯——太慢了！\"老陈说：\"加个缓存：5 秒内读过的值直接返回缓存的，不用重新读。用 Dictionary 存 {地址: (值, 时间)}，读之前先查缓存，过期了才真读 PLC。这里用简化的版本——记录上次读取的值，如果新值和上次一样，标记'缓存命中'。\"", "task": "模拟连续5次查询同一个寄存器100。用变量 lastValue 存上次的值。每次读取后和上次比较：一样就 Print '缓存命中'，不一样就 Print '新数据'并更新缓存。模拟温度从 255→258→260 的变化。" },
+  "concepts": ["缓存策略", "变量比较", "数据去重"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 255 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 用缓存避免重复读取不变的数据\n\n// TODO 1: 变量 ushort lastValue = 0\n\n\n// TODO 2: for 循环 5 次\n\n{\n    // TODO 3: 读寄存器100\n\n\n    // TODO 4: 比较当前值和 lastValue\n    //   相同 → Print \"缓存命中\"\n    //   不同 → Print \"新数据\", 更新 lastValue\n\n\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "只有第一次不同（255 vs 0），后面四次相同所以缓存命中。模拟：第一次打印新数据255，后面四次打印缓存命中。" },
+    { "level": 2, "text": "if (current == lastValue) Print(\"缓存命中\"); else { Print($\"新数据: {current}\"); lastValue = current; }" },
+    { "level": 3, "text": "ushort lastValue = 0;\nfor (int i = 0; i < 5; i++)\n{\n    ushort current = Plc.ReadHoldingRegister(100);\n    if (current == lastValue)\n        Print($\"[{i}] 缓存命中 → {current}\");\n    else\n    {\n        Print($\"[{i}] 新数据: {current}\");\n        lastValue = current;\n    }\n}" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "缓存命中" },
+  "achievement": { "id": "cache", "name": "数据缓存", "description": "第一次实现读写缓存优化" }
+}

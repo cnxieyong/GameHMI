@@ -1,0 +1,15 @@
+{
+  "id": "55", "title": "界面和后台要分离",
+  "scene": { "narrative": "小李的程序又卡住了——采集 100 台设备数据的时候，界面像死了一样不能点。老陈教他：\"UI 线程不能干重活！重的活丢给后台线程，只把结果送回 UI 显示。这是所有上位机软件的铁律——界面永远不能卡。用回调模式：后台干活，干完了用回调通知前台更新。\"", "task": "写一个 CollectData 方法模拟耗时的数据采集（for 循环 5 次，每次读一个寄存器）。定义一个 OnDataReady 回调方法，在采集完每条数据后立即调用回调打印结果。这样就模拟了'后台采集+前台显示'的模式。" },
+  "concepts": ["回调模式", "UI线程分离", "委托入门"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 255, "101": 300, "102": 280, "103": 310, "104": 270 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 回调模式——采集完后通知显示\n\n// TODO 1: 写 CollectData(int[] addrs, Action<int, ushort> callback) 方法\n//   for 循环遍历地址数组，读每个寄存器\n//   每次读完后，调用 callback(addr, value)\n\n\n{\n\n\n\n\n}\n\n// TODO 2: 定义回调方法 OnDataReady(int addr, ushort val)\n//   Print $\"地址{addr}: {val}\"\n\n\n{\n\n}\n\n// TODO 3: 准备地址数组 {100,101,102,103,104}，调用 CollectData\n\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "void CollectData(int[] addrs, Action<int,ushort> callback) { for(int i=0;i<addrs.Length;i++) { var v=Plc.ReadHoldingRegister(addrs[i]); callback(addrs[i], v); } }" },
+    { "level": 2, "text": "回调是 C# 的核心模式——把方法当参数传。Action<int,ushort> 表示接收两个参数不返回值的方法。" },
+    { "level": 3, "text": "void CollectData(int[] addrs, Action<int, ushort> callback) {\n    foreach (var addr in addrs) {\n        ushort val = Plc.ReadHoldingRegister(addr);\n        callback(addr, val);\n    }\n}\n\nvoid OnDataReady(int addr, ushort val) {\n    Print($\"地址{addr}: 数据={val}\");\n}\n\nint[] addrs = { 100, 101, 102, 103, 104 };\nCollectData(addrs, OnDataReady);\nPrint(\"采集完成\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "采集完成" },
+  "achievement": { "id": "callback", "name": "回调模式", "description": "第一次用回调实现后台-前台数据分离" }
+}

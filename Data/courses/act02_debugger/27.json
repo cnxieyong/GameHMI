@@ -1,0 +1,15 @@
+{
+  "id": "27", "title": "通讯时好时坏",
+  "scene": { "narrative": "老陈敲了敲机柜：\"这老设备有时候响应超时——发了查询半天不回。你得设超时保护：ReadLine 没返回 null，但不能无限等。每台设备最多试 3 次，3 次都失败就标记为'离线'，继续下一台。\"", "task": "模拟轮询 3 台设备，每台尝试 ReadLine 读取数据。如果读到 null 就重试，最多3次。3次都失败就 Print '设备离线'，继续下一台。" },
+  "concepts": ["超时重试", "for 重试循环", "容错处理"],
+  "factory": { "layout": "single_device", "serialResponse": "OK\n\n\nOK\n", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.5 }] },
+  "template": "// 3台设备，每台最多重试3次，失败的标记为离线\n\n// TODO 1: 打开串口\n\n\n// TODO 2: for 循环 i=1 到 3（3台设备）\n\n{\n    // TODO 3: 内层 for 循环 retry=0 到 2（最多3次尝试）\n    //   读一次 ReadLine()，如果不为 null 就打印成功并 break\n    //   如果所有尝试都失败，打印 \"设备{i}离线\"\n\n\n\n\n\n\n}\n\nPrint(\"巡检完成\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "双层 for：外层遍历设备，内层重试。读到数据就 break 跳出重试循环。" },
+    { "level": 2, "text": "bool ok = false; for (int r = 0; r < 3; r++) { var d = Serial.ReadLine(); if (d != null) { Print(d); ok = true; break; } } if (!ok) Print(\"离线\");" },
+    { "level": 3, "text": "Serial.Open();\nfor (int i = 1; i <= 3; i++)\n{\n    bool ok = false;\n    for (int r = 0; r < 3; r++)\n    {\n        var d = Serial.ReadLine();\n        if (d != null) { Print($\"设备{i}: {d}\"); ok = true; break; }\n    }\n    if (!ok) Print($\"设备{i}离线\");\n}\nPrint(\"巡检完成\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "巡检完成" },
+  "achievement": { "id": "retry", "name": "超时重试", "description": "第一次实现超时重试逻辑" }
+}

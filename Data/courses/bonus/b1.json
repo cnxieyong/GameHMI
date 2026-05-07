@@ -1,0 +1,15 @@
+{
+  "id": "B1", "title": "最短代码挑战",
+  "scene": { "narrative": "老板说：\"代码越短越好——短意味着维护成本低、bug少。你能用最少的行数完成巡检吗？规则：检查3段工位（寄存器100/200/300），任何一段温度>300就报警。用最少的语句行数（不计大括号）。挑战：能否在3行内完成？\"", "task": "用最少行数完成3段工位巡检。不计大括号和空行。最少可以用几行？" },
+  "concepts": ["代码精简", "三元运算符", "一行流"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 250, "200": 320, "300": 280 }, "devices": [{ "type": "DryerBox", "id": "d", "label": "产线", "temp": 25.5 }] },
+  "template": "// 用最少的行数完成3段巡检！\n// 规则：不计 { } 和空行\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "尝试用三元运算符 ? : 来压缩 if/else。一行可以写多个语句用 ; 隔开（不推荐生产代码但挑战可以）。" },
+    { "level": 2, "text": "for(int i=0;i<3;i++){ var t=Plc.ReadHoldingRegister(100+i*100); Print(t>300?\"报警\":\"正常\"); }" },
+    { "level": 3, "text": "for(int i=0;i<3;i++) Print(Plc.ReadHoldingRegister(100+i*100)>300?\"⚠报警\":\"✓正常\"); // 1行循环 + 1行核心逻辑 = 2行！" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "报警" },
+  "achievement": { "id": "minimalist", "name": "极简大师", "description": "用最少的代码行数完成挑战" }
+}

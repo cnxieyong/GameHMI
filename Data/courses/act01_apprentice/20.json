@@ -1,0 +1,33 @@
+{
+  "id": "20",
+  "title": "阶段考核：产线一键巡检",
+  "scene": {
+    "narrative": "厂长把一份文件递到你面前：\"小伙子，你来了一个月了。今天交给你一个完整任务——设计一套产线巡检系统。三条产线各有烘干箱、电机、加热器，你要能一键检查所有设备，输出报表，发现异常要标记。这是你从学徒转正的最后考验。\"\n\n老陈在旁边笑着点点头：\"别紧张，就是把你这段时间学的都用上——类、List、foreach、if/else、方法封装。做出来给厂长看看。\"",
+    "task": "设计一个完整的产线巡检程序：1) 定义设备类 2) 创建 3 条产线 3) foreach 遍历检查 4) 输出报表 5) 标记异常设备（温度 > 30°C 的标记为异常）。完成这关，你就正式从\"产线学徒\"毕业了。"
+  },
+  "concepts": ["综合复习", "类/List/foreach", "if判断", "方法封装", "格式化输出"],
+  "factory": {
+    "layout": "multi_device",
+    "devices": [
+      { "type": "DryerBox", "id": "line1", "label": "产线1", "temp": 25.0 },
+      { "type": "DryerBox", "id": "line2", "label": "产线2", "temp": 33.0 },
+      { "type": "DryerBox", "id": "line3", "label": "产线3", "temp": 28.0 }
+    ]
+  },
+  "template": "// ===== 产线一键巡检系统 =====\n// 把你学到的都用上，完成最后的考核\n\n// TODO 1: 定义设备类 ProductionLine\n//   包含字段: string Name; double Temperature; bool MotorRunning; bool HeaterOn;\n//   构造函数: 传入 name 和 temperature\n\nclass ProductionLine\n{\n\n\n\n\n\n}\n\n// TODO 2: 创建 3 条产线实例 (用构造函数一次性设置名称和温度)\n//   产线A: 25°C, 产线B: 33°C(超标!), 产线C: 28°C\n\n\n\n\n\n// TODO 3: 设置各产线的电机和加热器状态\n//   产线A: 电机运行, 加热关闭\n//   产线B: 电机停止, 加热开启\n//   产线C: 电机运行, 加热关闭\n\n\n\n\n\n\n\n\n// TODO 4: 把三条产线放进 List<ProductionLine>\n\n\n\n\n\n// TODO 5: 写一个巡检方法 CheckLine(ProductionLine line)\n//   打印产线名、温度、电机、加热器\n//   如果温度 > 30，标记\"⚠ 异常\"\n\n{\n\n\n\n\n\n\n\n\n\n}\n\n// TODO 6: foreach 遍历 List，调用 CheckLine\n\n{\n\n}\n\nPrint(\"===== 巡检完成 =====\");\n// TODO 7: 统计异常产线数并打印\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "类: class ProductionLine { public string Name; public double Temperature; public bool MotorRunning; public bool HeaterOn; public ProductionLine(string n, double t) { Name = n; Temperature = t; } }" },
+    { "level": 2, "text": "CheckLine 里先 Print 基本信息，再 if (line.Temperature > 30) Print(\"  ⚠ 异常！\")。统计: 在 foreach 外面设 int abnormal = 0，里面 if 超标就 abnormal++。" },
+    { "level": 3, "text": "class ProductionLine\n{\n    public string Name;\n    public double Temperature;\n    public bool MotorRunning;\n    public bool HeaterOn;\n    public ProductionLine(string n, double t) { Name = n; Temperature = t; }\n}\n\nvar lineA = new ProductionLine(\"产线A\", 25);\nlineA.MotorRunning = true;\nvar lineB = new ProductionLine(\"产线B\", 33);\nlineB.HeaterOn = true;\nvar lineC = new ProductionLine(\"产线C\", 28);\nlineC.MotorRunning = true;\n\nvar lines = new List<ProductionLine>();\nlines.Add(lineA); lines.Add(lineB); lines.Add(lineC);\n\nvoid CheckLine(ProductionLine line)\n{\n    Print($\"{line.Name}: {line.Temperature}°C 电机:{(line.MotorRunning?\"运行\":\"停止\")} 加热:{(line.HeaterOn?\"开启\":\"关闭\")}\");\n    if (line.Temperature > 30) Print(\"  ⚠ 异常！\");\n}\n\nint abnormal = 0;\nforeach (var line in lines)\n{\n    CheckLine(line);\n    if (line.Temperature > 30) abnormal++;\n}\n\nPrint($\"异常产线: {abnormal}\");\nPrint(\"===== 巡检完成 =====\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "巡检完成"
+  },
+  "achievement": {
+    "id": "act1_clear",
+    "name": "产线学徒毕业",
+    "description": "完成第一幕全部关卡，从学徒晋升为设备调试员"
+  }
+}

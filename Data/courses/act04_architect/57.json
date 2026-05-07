@@ -1,0 +1,15 @@
+{
+  "id": "57", "title": "不停机热更新",
+  "scene": { "narrative": "老陈接了个电话，脸色变了：\"工艺部改了报警阈值——35°C 才报警改成 32°C。不停机！在线改参数！\"你挠头：\"可配置文件已经加载了...\" 老陈：\"所以你需要热更新机制——程序检测到配置变了，自动重新加载。在 C# 里用 FileSystemWatcher 监控配置文件变化。这里我们用概念模拟：写一个 CheckUpdate 方法，对比'旧配置'和'新配置'，发现变化就自动更新。\"", "task": "定义两组配置（旧阈值 350，新阈值 320）。写一个方法对比新旧配置值，如果发现不同就 Print '检测到配置变更'并更新。模拟调用3次——前两次不变，第三次配置变了触发更新。" },
+  "concepts": ["热更新", "配置对比", "在线变更"],
+  "factory": { "layout": "single_device", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "参数测试", "temp": 25.5 }] },
+  "template": "// 热更新：不停机检测并应用新配置\n\n// TODO 1: 变量 oldThreshold = 350, newThreshold = 320\n\n\n// TODO 2: 写 CheckUpdate() 方法\n//   对比 old 和 new，不同就 Print \"配置变更\" + 更新 old = new\n//   相同就 Print \"配置未变\"\n\n{\n\n\n\n\n\n}\n\n// TODO 3: 调用3次 CheckUpdate: 第1次 old=350 vs new=320 → 变更\n//   第2次 old=320 vs new=320 → 未变\n//   newThreshold改为300，第3次 → 变更\n\n\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "void CheckUpdate() { if (oldThreshold != newThreshold) { Print(\"检测到配置变更\"); oldThreshold = newThreshold; } else Print(\"配置未变\"); }" },
+    { "level": 2, "text": "调三次：①350vs320→变更 ②320vs320→未变 ③320vs300→变更" },
+    { "level": 3, "text": "ushort oldT = 350, newT = 320;\nvoid CheckUpdate() {\n    if (oldT != newT) { Print($\"配置变更: {oldT/10.0}→{newT/10.0}°C\"); oldT = newT; }\n    else Print(\"配置未变\");\n}\n\nCheckUpdate();\nCheckUpdate();\nnewT = 300;\nCheckUpdate();" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "配置变更" },
+  "achievement": { "id": "hot_reload", "name": "热更新", "description": "第一次实现不停机配置热更新" }
+}

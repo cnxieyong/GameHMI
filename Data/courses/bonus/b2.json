@@ -1,0 +1,15 @@
+{
+  "id": "B2", "title": "容错极限挑战",
+  "scene": { "narrative": "老板设了个变态测试：10台设备中，随机3台返回错误数据（温度=9999）。你的程序不能崩，要全部读完，统计正常设备数。之前学的 try/catch、异常过滤、校验——全都得用上。工业现场比这残酷多了。\"", "task": "10台设备（地址 100-109），其中3台的寄存器值为 9999（异常）。用 try/catch 或 if 判断过滤异常值，统计正常设备数和异常设备数。程序绝对不能崩。" },
+  "concepts": ["极限容错", "异常过滤", "鲁棒性"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 250, "101": 9999, "102": 280, "103": 9999, "104": 300, "105": 260, "106": 9999, "107": 270, "108": 255, "109": 290 }, "devices": [{ "type": "DryerBox", "id": "d", "label": "极限测试", "temp": 25.5 }] },
+  "template": "// 10台设备，3台异常，程序不能崩\n\n// TODO 1: int[] addrs = {100,101,...,109}\n\n\n// TODO 2: 变量 ok=0, bad=0\n\n\n// TODO 3: foreach 遍历，读寄存器\n//   值 > 5000 或 == 9999 → bad++\n//   正常 → ok++\n\n\n\n\n\n\n\n// TODO 4: 打印统计\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "if (val > 5000) bad++; else ok++; 简单粗暴但有效。" },
+    { "level": 2, "text": "foreach (var a in addrs) { var v = Plc.ReadHoldingRegister(a); if (v > 5000) { bad++; Print($\"设备{a}异常\"); } else { ok++; Print($\"设备{a}正常\"); } }" },
+    { "level": 3, "text": "int[] addrs = {100,101,102,103,104,105,106,107,108,109};\nint ok=0, bad=0;\nforeach(var a in addrs) {\n    var v = Plc.ReadHoldingRegister(a);\n    if (v > 5000) { bad++; Print($\"设备{a}: 异常({v})\"); }\n    else { ok++; Print($\"设备{a}: {v/10.0}°C\"); }\n}\nPrint($\"正常{ok}台, 异常{bad}台, 程序运行正常\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "程序运行正常" },
+  "achievement": { "id": "robust_master", "name": "容错大师", "description": "在3台设备异常的情况下程序稳定运行" }
+}

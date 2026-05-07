@@ -1,0 +1,15 @@
+{
+  "id": "54", "title": "设备多了初始化慢",
+  "scene": { "narrative": "产线扩展到 20 台 PLC，一台一台初始化要 20 秒。老陈：\"串行太慢，得并发。C# 里用 Task.WhenAll 等所有任务一起完成。虽然我们这儿不能真并发——但你可以把初始化逻辑写成方法，把所有设备的初始化'任务'放进 List，用 for 循环一起执行——至少把逻辑结构化，将来换成真并发就容易了。\"", "task": "定义 InitDevice(int id) 方法模拟设备初始化（读一次寄存器），把 10 台设备的初始化放进循环批量执行。记录每台设备的初始化结果（成功/失败），最后打印初始化统计。" },
+  "concepts": ["批量初始化", "任务列表", "并发概念"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 1, "101": 1, "102": 0, "103": 1, "104": 1, "105": 1, "106": 0, "107": 1, "108": 1, "109": 1 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 批量设备初始化——10台设备一起检查\n\n// TODO 1: 写 InitDevice(int id, int addr) 方法\n//   读寄存器 addr，如果值>0 → 返回 true（初始化成功）\n//   否则 → 返回 false（失败）\n\n\n{\n\n\n\n\n}\n\n// TODO 2: 计数器 success=0, fail=0\n\n\n// TODO 3: for 循环 10 次，调用 InitDevice，统计成功和失败\n\n{\n\n\n\n\n\n}\n\n// TODO 4: 打印初始化统计\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "bool InitDevice(int id, int addr) { return Plc.ReadHoldingRegister(addr) > 0; }" },
+    { "level": 2, "text": "for (int i = 0; i < 10; i++) { if (InitDevice(i, 100+i)) success++; else fail++; }" },
+    { "level": 3, "text": "bool InitDevice(int id, int addr) {\n    ushort val = Plc.ReadHoldingRegister(addr);\n    return val > 0;\n}\n\nint ok = 0, bad = 0;\nfor (int i = 0; i < 10; i++) {\n    if (InitDevice(i, 100 + i)) ok++;\n    else { bad++; Print($\"设备{i} 初始化失败\"); }\n}\nPrint($\"初始化完成: 成功{ok}台, 失败{bad}台\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "初始化完成" },
+  "achievement": { "id": "batch_init", "name": "批量初始化", "description": "第一次实现批量设备初始化" }
+}

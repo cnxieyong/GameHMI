@@ -1,0 +1,15 @@
+{
+  "id": "34", "title": "多设备同时采集",
+  "scene": { "narrative": "4台设备同时上报数据，但串口只有一根线——数据是排队来的。老陈教你：\"把采集逻辑封装成方法，用 for 循环一口气全部读完。以后学了真正的多线程，就能做到真正的'同时'采集——现在先打好基础。\"\n\n\"关键技巧：采集逻辑和数据统计分离。先批量读完所有原始数据，再统一分析。\"", "task": "4台设备的数据存在串口缓冲区。一口气全部 ReadLine 读完，存到一个 List<string> 里。然后用 foreach 遍历 List，统计正常数据和异常数据的数量（空行算异常）。" },
+  "concepts": ["批量采集", "List 存储", "数据统计"],
+  "factory": { "layout": "single_device", "serialResponse": "T=25.5\n\nT=30.2\nT=28.0\n", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }] },
+  "template": "// 批量读取所有串口数据，存入 List，再统计分析\n\n// TODO 1: 创建 List<string> dataList = new List<string>()\n\n\n// TODO 2: 打开串口，while 循环把 ReadLine 全部 Add 到 List\n\n{\n\n\n\n}\n\n// TODO 3: foreach 遍历 dataList，统计正常和异常（空字符串算异常）\n\n{\n\n\n\n}\n\n// TODO 4: Print 统计结果\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "while ((line = Serial.ReadLine()) != null) { dataList.Add(line); } 全部读完。" },
+    { "level": 2, "text": "foreach 里 if (string.IsNullOrEmpty(d)) abnormal++; else normal++;" },
+    { "level": 3, "text": "var dataList = new List<string>();\nSerial.Open();\nstring? line;\nwhile ((line = Serial.ReadLine()) != null) dataList.Add(line);\n\nint ok = 0, bad = 0;\nforeach (var d in dataList)\n{\n    if (string.IsNullOrEmpty(d)) bad++;\n    else ok++;\n}\nPrint($\"正常: {ok} 条, 异常: {bad} 条\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "异常" },
+  "achievement": { "id": "batch_read", "name": "批量采集", "description": "第一次实现批量数据采集和统计" }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "03",
+  "title": "温度又涨了",
+  "scene": {
+    "narrative": "\"出事了！\"老陈突然喊了一声，手指着急地点着屏幕：\"烘干箱温度超过30°C了！超过这个线产品就要报废，去年就因为这个赔了一大笔钱。\"\n\n他擦了擦汗：\"我们这行有个规矩——看到数据不光要记，还得判断。超了警戒线就得立刻报警，没超就继续盯着。这叫'逻辑判断'，用代码说就是 if/else。\"\n\n\"温度 > 30，发红色警告；否则，报绿色正常。很简单，但你得写对。\"",
+    "task": "用 if/else 判断 SensorTemp：超过 30°C 就 Print 红色警告，否则 Print 绿色正常。"
+  },
+  "concepts": ["if/else", "比较运算符 >", "bool 条件"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 32.5 }
+    ]
+  },
+  "template": "// 判断温度是否超标\n// SensorTemp 当前是 32.5°C，已经超了 30°C 警戒线\n\nif (SensorTemp > 30)\n{\n    // TODO: 温度超标，打印红色警告\n    // 用 Print 输出 \"🔴 警告：温度过高！\"\n}\nelse\n{\n    // TODO: 温度正常，打印绿色提示\n    // 用 Print 输出 \"🟢 温度正常\"\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "if 大括号里的代码只在条件成立时执行。> 是比较运算符，30 是警戒值" },
+    { "level": 2, "text": "if 里面写: Print(\"🔴 警告：温度过高！\");\nelse 里面写: Print(\"🟢 温度正常\");" },
+    { "level": 3, "text": "if (SensorTemp > 30)\n{\n    Print(\"🔴 警告：温度过高！\");\n}\nelse\n{\n    Print(\"🟢 温度正常\");\n}" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "警告"
+  },
+  "achievement": {
+    "id": "first_if",
+    "name": "逻辑判断",
+    "description": "第一次用 if/else 做条件判断"
+  }
+}

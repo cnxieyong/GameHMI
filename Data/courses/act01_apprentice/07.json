@@ -1,0 +1,31 @@
+{
+  "id": "07",
+  "title": "不同报警等级",
+  "scene": {
+    "narrative": "工艺部送来一份新的温度标准贴在墙上：\n• < 30°C：🟢 正常运行\n• 30-34°C：🟡 黄色预警，注意观察\n• 35-39°C：🟠 橙色告警，准备降温\n• ≥ 40°C：🔴 红色停机，立即关闭加热器\n\n老陈指着标准说：\"你看，不是一个简单的'超不超30'就完了。不同温度要不同处理。以前你只会 if/else，现在得学 else if——多级判断。\"",
+    "task": "根据 SensorTemp 的值，用 if / else if / else 输出对应等级的报警信息。注意从高到低判断。"
+  },
+  "concepts": ["else if", "多条件判断", ">= <= 比较", "判断顺序"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 38.2 }
+    ]
+  },
+  "template": "// SensorTemp 当前是 38.2°C\n// 根据温度分级标准输出对应等级\n// 注意: 从最高温开始往下判断！\n\n// TODO 1: 判断 >= 40°C → 🔴 红色停机\nif ()\n{\n    Print(\"🔴 红色停机！立即关闭加热器\");\n    HeaterOn = false;\n}\n// TODO 2: 判断 >= 35°C → 🟠 橙色告警\n\n{\n\n}\n// TODO 3: 判断 >= 30°C → 🟡 黄色预警\n\n{\n\n}\n// TODO 4: 否则 → 🟢 正常运行\n\n{\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "从大到小判断：先 if (SensorTemp >= 40)，再 else if (SensorTemp >= 35)，再 else if (SensorTemp >= 30)，最后 else。" },
+    { "level": 2, "text": "Orange: Print(\"🟠 橙色告警！准备降温\")。Yellow: Print(\"🟡 黄色预警，注意观察\")。Green: Print(\"🟢 正常运行\")。" },
+    { "level": 3, "text": "if (SensorTemp >= 40) { Print(\"🔴 红色停机！\"); HeaterOn = false; }\nelse if (SensorTemp >= 35) { Print(\"🟠 橙色告警！\"); }\nelse if (SensorTemp >= 30) { Print(\"🟡 黄色预警\"); }\nelse { Print(\"🟢 正常运行\"); }" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "橙色"
+  },
+  "achievement": {
+    "id": "first_elseif",
+    "name": "多级判断",
+    "description": "第一次用 else if 做多级条件判断"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "05",
+  "title": "同样的活每天做",
+  "scene": {
+    "narrative": "一周过去了，老陈发现你每天早上都在重复同一段检查代码。\"你这样不行，万一哪天漏了一步呢？把检查流程封装成一个方法，取个名字，以后直接调用就行。\"\n\n他指着白板上手写的巡检清单：1. 看温度 2. 看电机 3. 看加热器。\"三步打包成一个 CheckAll 方法，调用一次全搞定。这就是写代码的好处——重复的活只写一遍。\"",
+    "task": "定义一个 CheckAll() 方法，在里面依次 Print 三样东西：1) 当前温度 2) 电机状态 3) 加热器状态。然后在方法外面调用它。"
+  },
+  "concepts": ["方法定义 void", "方法调用", "代码复用"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 27.3 }
+    ]
+  },
+  "template": "// 把你每天重复的检查工作封装成一个方法\n// TODO 1: 定义一个 void CheckAll() 方法\n\n{\n    // TODO 2: Print 温度\n\n    // TODO 3: Print 电机状态（运行中/已停止）\n\n    // TODO 4: Print 加热器状态（开启/关闭）\n\n}\n\n// TODO 5: 在方法外面调用 CheckAll()\n\n\n// TODO 6: 再调用一次 CheckAll()，证明你不用写两遍代码\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "方法定义: void CheckAll() { ... }。void 表示不返回值，CheckAll 是方法名，大括号里放要执行的代码。" },
+    { "level": 2, "text": "方法里 Print($\"温度: {SensorTemp}°C\")、Print($\"电机: {(MotorRunning ? \"运行中\" : \"已停止\")}\")、Print($\"加热器: {(HeaterOn ? \"开启\" : \"关闭\")}\")。方法外面写两行 CheckAll();" },
+    { "level": 3, "text": "void CheckAll()\n{\n    Print($\"温度: {SensorTemp}°C\");\n    Print($\"电机: {(MotorRunning ? \"运行中\" : \"已停止\")}\");\n    Print($\"加热器: {(HeaterOn ? \"开启\" : \"关闭\")}\");\n}\n\nCheckAll();\nCheckAll();" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "加热器"
+  },
+  "achievement": {
+    "id": "first_method",
+    "name": "方法封装",
+    "description": "第一次把重复代码封装成方法"
+  }
+}

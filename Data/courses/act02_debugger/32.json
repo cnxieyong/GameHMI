@@ -1,0 +1,15 @@
+{
+  "id": "32", "title": "不同串口不同参数",
+  "scene": { "narrative": "车间有两台设备要同时通讯：一台用 COM3 9600 波特率，一台用 COM4 115200。老陈说：\"串口参数——端口号、波特率、数据位、停止位、校验位——都得根据设备要求配置。配错了就通不上。\"\n\n\"我们用代码模拟：创建两个串口对象（通过自定义类），分别设不同参数，演示配置差异。\"", "task": "写一个方法 ConfigSerial(string port, int baud)，打印端口配置信息。分别用 COM3/9600 和 COM4/115200 调用它。再演示：如果波特率设成 0 就打印'配置无效'。" },
+  "concepts": ["串口参数", "方法参数", "参数校验"],
+  "factory": { "layout": "single_device", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }] },
+  "template": "// 不同设备用不同的串口参数\n\n// TODO 1: 写 ConfigSerial(string port, int baud) 方法\n//   如果 baud <= 0 → Print \"配置无效\" 并 return\n//   否则 Print $\"串口配置: {port} @ {baud}bps\"\n\n{\n\n\n\n\n}\n\n// TODO 2: 分别用两套参数调用\n\n\n\n// TODO 3: 测试无效配置\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "方法里先 if (baud <= 0) { Print(\"配置无效\"); return; } 参数校验。" },
+    { "level": 2, "text": "ConfigSerial(\"COM3\", 9600); ConfigSerial(\"COM4\", 115200); ConfigSerial(\"COM5\", 0);" },
+    { "level": 3, "text": "void ConfigSerial(string port, int baud)\n{\n    if (baud <= 0) { Print($\"{port} 配置无效\"); return; }\n    Print($\"{port} @ {baud}bps 配置成功\");\n}\n\nConfigSerial(\"COM3\", 9600);\nConfigSerial(\"COM4\", 115200);\nConfigSerial(\"COM5\", 0);" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "115200" },
+  "achievement": { "id": "serial_config", "name": "串口配置", "description": "第一次理解串口参数配置" }
+}

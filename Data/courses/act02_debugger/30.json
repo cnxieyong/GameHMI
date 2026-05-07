@@ -1,0 +1,15 @@
+{
+  "id": "30", "title": "二进制温度解析",
+  "scene": { "narrative": "老陈翻出一台老设备：\"这台不传 ASCII 文字，只传原始字节——两个字节拼成一个温度值。高字节 × 256 + 低字节 = 实际温度 × 10。比如说收到 0x01 0x0A，就是 1×256+10=266，实际温度 26.6°C。”\n\n“我们用字符串模拟：每条数据是一串十六进制，比如 '010A'。前两个字符是高字节，后两个是低字节。用 Convert.ToInt32 把十六进制转数字。\"", "task": "串口返回3条十六进制温度数据。用 Convert.ToInt32(str, 16) 把十六进制字符串转数字，按公式算实际温度。" },
+  "concepts": ["十六进制", "Convert.ToInt32(str,16)", "字节解析", "公式运算"],
+  "factory": { "layout": "single_device", "serialResponse": "010A\n00FF\n0120\n", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 26.6 }] },
+  "template": "// 十六进制温度: 高字节 × 256 + 低字节 = 温度 × 10\n// '010A' = 0x01 × 256 + 0x0A = 266 → 26.6°C\n\n// TODO 1: 打开串口，while 读取每一行\n\n{\n    // TODO 2: 取前两字符 = 高字节，用 Convert.ToInt32(s, 16) 转数字\n\n\n    // TODO 3: 取后两字符 = 低字节，同样转数字\n\n\n    // TODO 4: raw = 高 × 256 + 低，实际温度 = raw / 10.0\n\n\n    // TODO 5: Print 解析后的温度\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "Convert.ToInt32(\"01\", 16) 把十六进制字符串转整数。Substring(0,2) 取前两位。" },
+    { "level": 2, "text": "int hi = Convert.ToInt32(line.Substring(0,2), 16); int lo = Convert.ToInt32(line.Substring(2,2), 16); double temp = (hi * 256 + lo) / 10.0;" },
+    { "level": 3, "text": "Serial.Open();\nstring? line;\nwhile ((line = Serial.ReadLine()) != null)\n{\n    int hi = Convert.ToInt32(line.Substring(0,2), 16);\n    int lo = Convert.ToInt32(line.Substring(2,2), 16);\n    double temp = (hi * 256 + lo) / 10.0;\n    Print($\"温度: {temp:F1}°C\");\n}" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "26.6" },
+  "achievement": { "id": "hex_parse", "name": "十六进制解析", "description": "第一次解析十六进制二进制数据" }
+}

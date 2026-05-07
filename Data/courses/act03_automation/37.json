@@ -1,0 +1,15 @@
+{
+  "id": "37", "title": "PLC 控制电机",
+  "scene": { "narrative": "\"光读不行，得能写！\"老陈指着 PLC 上的输出指示灯：\"线圈 0 控制电机启停——写入 true 电机转，写入 false 电机停。线圈 1 控制加热器开关。线圈 2 控制报警灯。设备控制就是这么简单：读寄存器看状态，写线圈下命令。\"", "task": "用 WriteCoil 控制设备：1) 打开线圈 0 启动电机 2) 打开线圈 1 开启加热 3) 读取并打印所有线圈状态。" },
+  "concepts": ["WriteCoil", "线圈控制", "读写操作"],
+  "factory": { "layout": "single_device", "plcCoils": { "0": false, "1": false, "2": false }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 用 WriteCoil 控制电机、加热器、报警灯\n\n// TODO 1: 写线圈 0 = true → 启动电机\n\n\n// TODO 2: 写线圈 1 = true → 开启加热器\n\n\n// TODO 3: 留线圈 2 = false → 报警灯关\n\n\n// TODO 4: 用 ReadCoil 读取线圈 0,1,2 状态并打印\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "Plc.WriteCoil(0, true) 启动电机。Plc.ReadCoil(0) 读取当前状态返回 bool。" },
+    { "level": 2, "text": "Print($\"电机: {(Plc.ReadCoil(0) ? \"运行\" : \"停止\")}\"); Print($\"加热: {(Plc.ReadCoil(1) ? \"开启\" : \"关闭\")}\");" },
+    { "level": 3, "text": "Plc.WriteCoil(0, true);\nPlc.WriteCoil(1, true);\n\nPrint($\"线圈0(电机): {Plc.ReadCoil(0)}\");\nPrint($\"线圈1(加热): {Plc.ReadCoil(1)}\");\nPrint($\"线圈2(报警): {Plc.ReadCoil(2)}\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "True" },
+  "achievement": { "id": "first_coil", "name": "线圈控制", "description": "第一次通过 Modbus 写线圈控制设备" }
+}

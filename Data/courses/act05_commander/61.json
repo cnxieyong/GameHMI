@@ -1,0 +1,19 @@
+{
+  "id": "61", "title": "完整产线联调",
+  "scene": { "narrative": "厂长指着新车间：\"这是你负责的第一条完整产线——投料段→烘干段→传送段→质检段→包装段，五个工段串起来。每个工段有独立的 PLC 寄存器段。你要把所有工段串成一条自动化流水线——前段完成自动触发后段启动，像多米诺骨牌一样。\"", "task": "5段工位，寄存器地址 100/200/300/400/500。模拟流水线：遍历5段，每段读温度判断是否正常（<300），正常就'启动'下一段，异常就报警。最后打印各段状态。" },
+  "concepts": ["产线联调", "工段协作", "流水线", "状态机"],
+  "factory": { "layout": "multi_device", "plcRegisters": { "100": 250, "200": 280, "300": 310, "400": 260, "500": 255 }, "devices": [
+    { "type": "DryerBox", "id": "s1", "label": "投料段", "temp": 25.0 },
+    { "type": "DryerBox", "id": "s2", "label": "烘干段", "temp": 28.0 },
+    { "type": "DryerBox", "id": "s3", "label": "传送段", "temp": 31.0 }
+  ]},
+  "template": "// ===== 五工段流水线联调 =====\n\n// TODO 1: 工段名称和寄存器地址数组\nstring[] stages = { \"投料\", \"烘干\", \"传送\", \"质检\", \"包装\" };\nint[] addrs = { 100, 200, 300, 400, 500 };\n\n// TODO 2: 变量 ok=0, alarm=0\n\n\n// TODO 3: for 循环遍历 5 段\n\n{\n    // TODO 4: 读温度，判断是否 < 300(30°C)\n    //   正常 → ok++, Print \"工段X正常→启动\"\n    //   异常 → alarm++, Print \"工段X异常→暂停\"\n\n\n\n}\n\n// TODO 5: 打印联调报告\n\n\n\n\nPrint(\"===== 产线联调完成 =====\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "for 里 if (temp < 300) ok++; else alarm++; 每段独立判断，失败了后面的继续。" },
+    { "level": 2, "text": "报告: Print($\"正常{ok}段, 异常{alarm}段, 产线运行率{ok*100.0/5}%\");" },
+    { "level": 3, "text": "string[] stages = { \"投料\", \"烘干\", \"传送\", \"质检\", \"包装\" };\nint[] addrs = { 100, 200, 300, 400, 500 };\nint ok = 0, alarm = 0;\nfor (int i = 0; i < 5; i++) {\n    ushort t = Plc.ReadHoldingRegister(addrs[i]);\n    if (t < 300) { ok++; Print($\"{stages[i]}: {t/10.0}°C 正常\"); }\n    else { alarm++; Print($\"{stages[i]}: {t/10.0}°C 异常\"); }\n}\nPrint($\"正常{ok}段, 异常{alarm}段, 运行率{ok*100.0/5:F0}%\");\nPrint(\"===== 产线联调完成 =====\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "产线联调完成" },
+  "achievement": { "id": "pipeline", "name": "产线指挥官", "description": "第一次完成五工段完整产线联调" }
+}

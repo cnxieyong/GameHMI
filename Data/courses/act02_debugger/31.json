@@ -1,0 +1,15 @@
+{
+  "id": "31", "title": "通讯日志很重要",
+  "scene": { "narrative": "老陈拿着一沓纸质日志：\"上个月设备异常，厂家来了三次都找不到原因——因为我们没有记录通讯日志。从今天起，所有串口收发的数据都要记录下来，每行加上时间。\"\n\n\"用 for 循环读 3 条数据，每条 Print 时加上序号和时间戳（不需要用 DateTime，用序号模拟即可）。如果数据为空，记录 '超时'\"。", "task": "轮询 5 次读取串口数据。每次读取后 Print '[序号] 数据内容'。如果没数据（null），Print '[序号] 超时，无响应'。最后 Print '日志记录完毕，共采集N条'。" },
+  "concepts": ["日志记录", "序号格式化", "DateTime 模拟"],
+  "factory": { "layout": "single_device", "serialResponse": "OK,25.5\n\nOK,26.0\n\nOK,26.2\n", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }] },
+  "template": "// 5次巡检，记录每次的通讯日志\n\n// TODO 1: 计数器 int received = 0\n\n\n// TODO 2: 打开串口，for 循环 5 次\n\n{\n    // TODO 3: 读取数据，不为 null 就计数+1并打印日志行\n    //   为 null 就打印超时\n\n\n\n\n}\n\n// TODO 4: Print 采集统计\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "for (int i = 1; i <= 5; i++) { var d = Serial.ReadLine(); if (d != null) { received++; Print($\"[{i}] {d}\"); } else Print($\"[{i}] 超时\"); }" },
+    { "level": 2, "text": "最后 Print($\"日志记录完毕，共采集{received}条\");" },
+    { "level": 3, "text": "int received = 0;\nfor (int i = 1; i <= 5; i++)\n{\n    var d = Serial.ReadLine();\n    if (d != null) { received++; Print($\"[{i:D2}] {d}\"); }\n    else Print($\"[{i:D2}] 超时，无响应\");\n}\nPrint($\"日志记录完毕，共采集{received}条\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "日志记录完毕" },
+  "achievement": { "id": "logging", "name": "日志记录", "description": "第一次实现通讯日志记录" }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "04",
+  "title": "不止一个温度点",
+  "scene": {
+    "narrative": "老陈带你到烘干箱背面：\"看到没？这台烘干箱有上、中、下三个温区，每个温区都有独立的传感器。上区负责预热、中区是核心烘干区、下区负责冷却段。三个温度都得盯着，任何一个超标都要报警。\"\n\n他从口袋里掏出一张纸条，上面写着今天的温度数据：上区 28°C，中区 32°C，下区 26°C。\"三个值用三个变量也不是不行……但要是以后加到十个温区呢？你得学会用数组。\"",
+    "task": "SensorTemps 是一个 double[] 数组，存了三个温区的温度。用 for 循环遍历数组，Print 每个温区的温度，如果某个温区超过 30°C 就额外打印一行警告。"
+  },
+  "concepts": ["数组 double[]", "for 循环", "Length 属性", "数组索引"],
+  "factory": {
+    "layout": "multi_zone",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "三温区烘干箱", "temp": 32.0 }
+    ]
+  },
+  "template": "// 烘干箱有上中下三个温区，温度存在数组 SensorTemps 里\n// SensorTemps[0] = 上区, [1] = 中区, [2] = 下区\n\n// TODO 1: 写一个 for 循环，i 从 0 到 SensorTemps.Length - 1\n\n{\n    // TODO 2: 用 Print 输出 \"温区 i: XX°C\"\n    // 提示: 用 $\"温区 {i}: {SensorTemps[i]}°C\"\n\n    // TODO 3: 用 if 判断这个温区的温度是否超过 30°C\n    // 如果超过，再 Print 一行 \"  ⚠ 超标！\"\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "for 循环写法: for (int i = 0; i < SensorTemps.Length; i++)。大括号里写重复执行的代码。SensorTemps[i] 是第 i 个温区的温度。" },
+    { "level": 2, "text": "循环里先 Print 温度，再 if (SensorTemps[i] > 30) 判断超不超标，超标就再 Print 一次警告。" },
+    { "level": 3, "text": "for (int i = 0; i < SensorTemps.Length; i++)\n{\n    Print($\"温区 {i}: {SensorTemps[i]}°C\");\n    if (SensorTemps[i] > 30)\n        Print(\"  ⚠ 超标！\");\n}" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "超标"
+  },
+  "achievement": {
+    "id": "first_array",
+    "name": "批量处理",
+    "description": "第一次用数组和 for 循环管理多个数据"
+  }
+}

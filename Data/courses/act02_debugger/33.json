@@ -1,0 +1,15 @@
+{
+  "id": "33", "title": "别让界面卡住",
+  "scene": { "narrative": "小李抱怨：\"点了查询按钮，整个界面就卡死了，等设备回复的时候啥都不能点！\" 老陈说：\"这就是同步和异步的区别。同步 = 一条道走到黑，中间什么都不干等着。异步 = 发起请求后立刻回来，等数据到了再处理。在 C# 里用 async/await 实现。这里我们用概念模拟——把耗时操作拆成'发起请求'和'处理结果'两个步骤。\"", "task": "写一个 CheckDevice(int id) 方法，先 Print '开始查询设备{id}...'，然后尝试 Serial.ReadLine()。如果读到数据就 Print 结果，否则 Print '设备{id}未响应'。连续检查3台设备，即使有一台没响应也不影响后面的。" },
+  "concepts": ["异步概念", "非阻塞", "Task 入门"],
+  "factory": { "layout": "single_device", "serialResponse": "OK\n\nOK\n", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }] },
+  "template": "// 3台设备逐一查询，任何一台失败不影响后面的\n\n// TODO 1: 写 CheckDevice(int id) 方法\n//   先 Print \"查询设备{id}...\"\n//   读数据，有就打印，没有就打印\"无响应\"\n\n{\n\n\n\n\n\n}\n\n// TODO 2: for 循环调用 CheckDevice(1) 到 CheckDevice(3)\n//   注意：即使 2 号失败，3 号也要继续查\n\n{\n\n}\n\nPrint(\"全部查询完毕\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "方法里用 if (data != null) ... else Print(\"无响应\"); 不要抛异常，简单处理即可。" },
+    { "level": 2, "text": "CheckDevice 里没有 return 值，只是打印信息。for 循环直接调用，不用 try/catch（null 不会抛异常）。" },
+    { "level": 3, "text": "void CheckDevice(int id)\n{\n    Print($\"查询设备{id}...\");\n    var d = Serial.ReadLine();\n    if (d != null) Print($\"设备{id}: {d}\");\n    else Print($\"设备{id}: 无响应\");\n}\nSerial.Open();\nfor (int i = 1; i <= 3; i++) CheckDevice(i);\nPrint(\"全部查询完毕\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "全部查询完毕" },
+  "achievement": { "id": "async_concept", "name": "异步入门", "description": "第一次理解非阻塞操作的概念" }
+}

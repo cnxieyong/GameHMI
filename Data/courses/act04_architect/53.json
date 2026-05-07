@@ -1,0 +1,15 @@
+{
+  "id": "53", "title": "并发访问要加锁",
+  "scene": { "narrative": "产线出了怪 bug：两个工序同时读写同一个 PLC 寄存器，数据对不上了。老陈说：\"这叫竞态条件——两个操作抢同一个资源。解决方案是加锁：在 C# 里用 lock 关键字保护共享数据。同一时刻只允许一个线程进入被锁保护的代码块。我们用变量模拟——设一个 isBusy 标志位，如果设备正被使用就等待。\"", "task": "用 bool isBusy 标志位模拟锁机制。写一个 SafeRead(int addr) 方法：如果 isBusy==true 就 Print '设备忙，等待...' 并跳过；如果 isBusy==false 就设 isBusy=true、读数据、设 isBusy=false、返回。连续调用3次验证。" },
+  "concepts": ["lock 概念", "竞态条件", "标志位保护"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 255 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 模拟锁机制——用 isBusy 标志保护共享资源\n\n// TODO 1: bool isBusy = false\n\n\n// TODO 2: 写 SafeRead(int addr) 方法\n//   if isBusy → Print \"忙\"，return\n//   isBusy = true → 读寄存器 → isBusy = false → return 值\n\n\n\n{\n\n\n\n\n}\n\n// TODO 3: 调用3次 SafeRead —— 第1次成功，第2、3次应该显示\"忙\"\n//   （因为我们同步执行，第一次结束后 isBusy=false，所以第2次也能成功...\n//    这里只是概念演示）\n//   改为：SafeRead→立即再SafeRead→验证结果\n\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "void SafeRead() { if (isBusy) { Print(\"忙\"); return; } isBusy=true; var v=Plc.ReadHoldingRegister(100); Print($\"读到: {v}\"); isBusy=false; }" },
+    { "level": 2, "text": "连续两次 SafeRead() 都能成功（因为同步执行）。加一个中间不重置的测试来演示'忙'的情况。" },
+    { "level": 3, "text": "bool isBusy = false;\nvoid SafeRead() {\n    if (isBusy) { Print(\"设备忙，放弃读取\"); return; }\n    isBusy = true;\n    Print($\"读取: {Plc.ReadHoldingRegister(100)}\");\n    isBusy = false;\n}\n\nSafeRead();\n// 模拟并发：不重置isBusy\nisBusy = true;\nSafeRead();\nSafeRead();\nisBusy = false;\nSafeRead();" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "设备忙" },
+  "achievement": { "id": "lock_concept", "name": "并发控制", "description": "第一次理解锁和并发安全的概念" }
+}

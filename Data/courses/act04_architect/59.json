@@ -1,0 +1,15 @@
+{
+  "id": "59", "title": "操作日志与审计",
+  "scene": { "narrative": "厂长严肃地说：\"上次停机是谁操作的？什么时间？因为什么？没有记录，谁的锅都甩不了。所有对 PLC 的写操作都必须留痕——操作人、时间、操作内容。这就是工业审计日志。每条日志存成一个 LogEntry 对象，放进 List 统一管理，出问题时可以追溯。\"", "task": "定义 LogEntry 类（Time, Action, Detail）。做一个 AuditWriter 方法，每次写 PLC 前先创建 LogEntry 存入 List。模拟 3 次写操作后遍历 List 打印审计日志。" },
+  "concepts": ["审计日志", "操作留痕", "追溯"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 0 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 审计日志——所有写操作留痕\n\n// TODO 1: 定义 LogEntry 类: string Time, Action, Detail\n\nclass LogEntry\n{\n\n\n\n\n}\n\n// TODO 2: 创建日志列表: List<LogEntry> auditLog\n\n\n\n// TODO 3: 写 AuditWrite(int addr, ushort val)\n//   创建 LogEntry → 加入 auditLog → 执行 WriteHoldingRegister\n\n\n\n{\n\n\n\n}\n\n// TODO 4: 模拟3次操作，然后 foreach 打印审计日志\n\n\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "class LogEntry { public string Time; public string Action; public string Detail; public LogEntry(string t, string a, string d) { Time=t; Action=a; Detail=d; } }" },
+    { "level": 2, "text": "AuditWrite: auditLog.Add(new LogEntry(\"10:00\", \"写入\", $\"寄存器{addr}={val}\")); Plc.WriteHoldingRegister(addr, val);" },
+    { "level": 3, "text": "class LogEntry { public string Time, Action, Detail; public LogEntry(string t, string a, string d) { Time=t; Action=a; Detail=d; } }\n\nvar log = new List<LogEntry>();\nvoid AuditWrite(int a, ushort v) {\n    log.Add(new LogEntry(\"10:0\"+log.Count, \"写PLC\", $\"地址{a}={v}\"));\n    Plc.WriteHoldingRegister(a, v);\n}\n\nAuditWrite(100, 850); AuditWrite(101, 1500); AuditWrite(10, 1);\n\nforeach (var e in log)\n    Print($\"[{e.Time}] {e.Action}: {e.Detail}\");\nPrint(\"审计完毕\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "审计完毕" },
+  "achievement": { "id": "audit_log", "name": "审计日志", "description": "第一次实现操作审计日志系统" }
+}

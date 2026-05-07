@@ -1,0 +1,31 @@
+{
+  "id": "19",
+  "title": "数据要留着看",
+  "scene": {
+    "narrative": "月底了，老陈翻着一沓手写记录：\"这个月温度巡检的所有数据要导出给厂长看。手工抄了一天还没抄完。\"\n\n\"用代码！把数据格式化成 CSV——逗号分隔的表格格式。CSV 的好处是 Excel 能直接打开，厂长双击就能看。时间、温度、电机状态、加热器状态，每行一条记录。\"\n\n\"这关你要连续采集 5 次数据（模拟 5 个时段），每次把时间戳和温度格式化成一行 CSV，最后 Print 出来。\"",
+    "task": "写一个 for 循环采集 5 次温度（模拟），每次 Print 一行 CSV 格式：编号,温度,电机状态,加热器状态。第一行先 Print 表头。"
+  },
+  "concepts": ["CSV 格式", "数据格式化", "for 循环实践", "字符串拼接"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.5 }
+    ]
+  },
+  "template": "// 生成 CSV 格式的巡检报表\n// CSV = Comma-Separated Values (逗号分隔值)\n\n// TODO 1: Print 表头行\n// 格式: \"编号,温度(°C),电机状态,加热器状态\"\n\n\n\n// TODO 2: 循环 5 次（模拟 5 次巡检）\n//   每次 Print 一行数据: $\"{i+1},{SensorTemp:F1},{电机},{加热器}\"\n\n{\n    // TODO: 把电机状态转成文字 (MotorRunning ? \"运行\" : \"停止\")\n\n    \n    // TODO: 把加热器状态转成文字 (HeaterOn ? \"开启\" : \"关闭\")\n\n    \n    // TODO: 拼接 CSV 行并 Print\n\n}\n\nPrint(\"--- 报表结束 ---\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "表头: Print(\"编号,温度(°C),电机状态,加热器状态\")。数据行: $\"{i+1},{SensorTemp:F1},{运行/停止},{开启/关闭}\"" },
+    { "level": 2, "text": "用变量存状态文字: string motor = MotorRunning ? \"运行\" : \"停止\"; string heater = HeaterOn ? \"开启\" : \"关闭\";" },
+    { "level": 3, "text": "Print(\"编号,温度(°C),电机状态,加热器状态\");\n\nfor (int i = 0; i < 5; i++)\n{\n    string motor = MotorRunning ? \"运行\" : \"停止\";\n    string heater = HeaterOn ? \"开启\" : \"关闭\";\n    Print($\"{i+1},{SensorTemp:F1},{motor},{heater}\");\n}\n\nPrint(\"--- 报表结束 ---\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "报表结束"
+  },
+  "achievement": {
+    "id": "first_csv",
+    "name": "数据导出",
+    "description": "第一次生成 CSV 格式的报表数据"
+  }
+}

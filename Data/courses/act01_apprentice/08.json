@@ -1,0 +1,31 @@
+{
+  "id": "08",
+  "title": "要看历史趋势",
+  "scene": {
+    "narrative": "老陈递给你一张表格：\"厂长要看出烘干箱温度在过去10秒的变化趋势。你之前只会看一次温度，现在要学会持续监控——每隔1秒读一次温度，连续读10次，把所有数据打印出来。\"\n\n\"用 while 循环，设一个计数器从0数到9，每次循环读 SensorTemp 并 Print，然后计数器加1。记住——while 循环最容易写成死循环，一定要确保条件最终会变成 false。\"",
+    "task": "用 while 循环连续读取并打印 SensorTemp 10 次。注意：由于每次循环很快，温度值读数可能相差不大（模拟引擎每0.1秒更新一次），这是正常的。关键是学会 while 循环的写法。"
+  },
+  "concepts": ["while 循环", "计数器", "死循环避免", "自增 ++"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 27.0 }
+    ]
+  },
+  "template": "// 用 while 循环连续采集 10 次温度\n// 每次打印当前温度和采集次数\n\n// TODO 1: 声明一个计数器 int count = 0;\n\n\n// TODO 2: while (count < 10)，大括号里：\n//   - Print 第几次采集 + 当前温度\n//   - count++ 让计数器加1\n\n{\n\n\n}\n\nPrint(\"采集完成！共采集 10 次。\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "while 语法: while (条件) { ... }。条件为 true 就一直循环。count++ 等价于 count = count + 1。" },
+    { "level": 2, "text": "循环里写: Print($\"第 {count + 1} 次: {SensorTemp:F1}°C\"); count++;" },
+    { "level": 3, "text": "int count = 0;\nwhile (count < 10)\n{\n    Print($\"第 {count + 1} 次采集: {SensorTemp:F1}°C\");\n    count++;\n}\nPrint(\"采集完成！\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "采集完成"
+  },
+  "achievement": {
+    "id": "first_while",
+    "name": "持续监控",
+    "description": "第一次用 while 循环连续采集数据"
+  }
+}

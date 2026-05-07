@@ -1,0 +1,31 @@
+{
+  "id": "12",
+  "title": "数据类型不对",
+  "scene": {
+    "narrative": "新来的实习生小李对接了一个温控表，数据传过来了但程序一直报错。老陈看了一眼屏幕就明白了：\"你看这个 '85.5'——它不是数字，是字符串！传感器传过来的数据默认都是文本格式，你得把它转换成 double 才能做比较。\"\n\n\"C# 里这招叫类型转换——用 double.Parse() 把文字转数字，或者用 Convert.ToDouble()。记着：解析是可能失败的，后面会学怎么防住。\"",
+    "task": "给了你三个字符串：\"28.5\"、\"32.0\"、\"abc\"。用 double.Parse() 把前两个转成数字并打印。第三个是故意埋的雷——暂时不用管它，后面会学到怎么处理。"
+  },
+  "concepts": ["double.Parse()", "string → double", "类型转换", "Convert.ToDouble()"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.5 }
+    ]
+  },
+  "template": "// 传感器发来的原始数据是字符串格式，不能直接用于计算\n// 你需要把它们转换成 double\n\n// TODO 1: 声明三个 string 变量\nstring s1 = \"28.5\";\nstring s2 = \"32.0\";\nstring s3 = \"abc\";  // 这个先别管\n\n// TODO 2: 用 double.Parse() 把 s1 转成数字，存到一个 double 变量里\n\n\n// TODO 3: 用 Convert.ToDouble() 把 s2 转成数字\n\n\n// TODO 4: Print 转换后的两个数字\n\n\n// TODO 5: 用 if 判断第一个数字是否 > 30，打印是否超标\n\n{\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "double.Parse(\"28.5\") 返回 28.5。Convert.ToDouble(\"32.0\") 也是同样的效果，两种写法都行。" },
+    { "level": 2, "text": "var d1 = double.Parse(s1); var d2 = Convert.ToDouble(s2); Print($\"温度1: {d1}°C, 温度2: {d2}°C\");" },
+    { "level": 3, "text": "string s1 = \"28.5\";\nstring s2 = \"32.0\";\ndouble d1 = double.Parse(s1);\ndouble d2 = Convert.ToDouble(s2);\nPrint($\"温度1: {d1}°C, 温度2: {d2}°C\");\nif (d1 > 30)\n    Print(\"温度1超标！\");\nelse\n    Print(\"温度1正常\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "32"
+  },
+  "achievement": {
+    "id": "first_parse",
+    "name": "类型转换",
+    "description": "第一次把字符串转成数字"
+  }
+}

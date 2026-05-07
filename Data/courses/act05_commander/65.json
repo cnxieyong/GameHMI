@@ -1,0 +1,19 @@
+{
+  "id": "65", "title": "交付与验收：智造工厂总控系统",
+  "scene": { "narrative": "一年了。你站在全新的智造工厂中央控制室里，墙上的大屏显示着三条产线的实时数据。厂长、技术总监、老师傅老陈都在。\"这就是你设计的总控系统——从第一行 Print 开始，到现在管理整座工厂。今天是交付验收：展示你搭建的完整上位机系统。\"老陈拍了拍你的肩膀：\"你是这个工厂最好的工程师。\"", "task": "终极考核：搭建智造工厂总控系统。1) 3条产线 2) 每线3工段 3) 自动巡检 4) 异常报警 5) 产量统计 6) 生成总控报表。把你学过的全部用上——这是你的毕业设计。" },
+  "concepts": ["总控系统", "系统集成", "完整交付", "毕业考核"],
+  "factory": { "layout": "multi_device", "plcRegisters": { "100": 250, "200": 280, "300": 260, "400": 255, "500": 270, "600": 265, "700": 310, "800": 255, "900": 258 }, "devices": [
+    { "type": "DryerBox", "id": "l1", "label": "产线A", "temp": 25.0 },
+    { "type": "DryerBox", "id": "l2", "label": "产线B", "temp": 28.0 },
+    { "type": "DryerBox", "id": "l3", "label": "产线C", "temp": 26.0 }
+  ]},
+  "template": "// ===== 智造工厂总控系统 · 毕业设计 =====\n\n// TODO 1: 定义产线数据\nstring[] lines = { \"产线A\", \"产线B\", \"产线C\" };\n// 每条线 3 个工段: {烘干, 传送, 包装}\nstring[] sections = { \"烘干\", \"传送\", \"包装\" };\n// 9个寄存器地址: A线100-102, B线200-202, C线300-302\n\n// TODO 2: 变量 totalOk=0, totalAlarm=0, totalQty=0\n\n\n// TODO 3: 双层 for 遍历 3线×3工段\n\n{\n\n    {\n        // TODO 4: 读寄存器温度, 判断正常/异常\n\n\n        // TODO 5: 累计统计\n\n\n\n    }\n\n}\n\n// TODO 6: 模拟产量（9工段各产100件）\n\n\n\n// TODO 7: 输出总控报表\nPrint(\"======== 智造工厂总控报表 ========\");\n\n\n\n\nPrint(\"======== 验收通过 ========\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "双层循环：外层产线(i) 内层工段(j)。地址 = (i+1)*100 + j。" },
+    { "level": 2, "text": "统计：每个工段读温度，<300 算正常。产量 = 9工段 × 100件。" },
+    { "level": 3, "text": "string[] lines = { \"产线A\", \"产线B\", \"产线C\" };\nstring[] sections = { \"烘干\", \"传送\", \"包装\" };\nint totalOk = 0, totalAlarm = 0;\nfor (int i = 0; i < 3; i++) {\n    for (int j = 0; j < 3; j++) {\n        int addr = (i + 1) * 100 + j;\n        ushort val = Plc.ReadHoldingRegister(addr);\n        if (val < 300) { totalOk++; }\n        else { totalAlarm++; Print($\"{lines[i]}-{sections[j]}: 异常\"); }\n    }\n}\nint totalQty = 9 * 100;\nPrint(\"======== 智造工厂总控报表 ========\");\nPrint($\"3线×3工段, 正常{totalOk}段, 异常{totalAlarm}段\");\nPrint($\"总产量: {totalQty}件\");\nPrint(\"======== 验收通过 ========\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "验收通过" },
+  "achievement": { "id": "act5_clear", "name": "智造工厂首席工程师", "description": "完成全部五幕课程，成为智造工厂首席自动化工程师" }
+}

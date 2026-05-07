@@ -1,0 +1,23 @@
+{
+  "id": "22",
+  "title": "发指令控制设备",
+  "scene": {
+    "narrative": "串口通了。老陈翻开一本泛黄的设备指令手册：\"看，这叫AT指令协议——每一行指令都有固定格式。查温度发 'TEMP?'，设备回 'OK,TEMP=25.5'；查状态发 'STATUS?'，设备回 'STATUS=NORMAL'。问什么答什么。\"\n\n他把手册递给你：\"你试试——发一条查询指令，读一条回复，就这样一问一答。\"",
+    "task": "打开串口后，用 WriteLine 发两条查询指令：'TEMP?' 和 'STATUS?'，每条发完后用 ReadLine 读回结果并 Print。"
+  },
+  "concepts": ["WriteLine()", "指令协议", "请求-响应模式"],
+  "factory": {
+    "layout": "single_device",
+    "serialResponse": "OK,TEMP=25.5\nSTATUS=NORMAL\n",
+    "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }]
+  },
+  "template": "// 按照指令手册，一问一答和温控表通讯\n\n// TODO 1: 打开串口\n\n\n// TODO 2: 用 WriteLine 发送查询指令 \"TEMP?\"\n\n\n// TODO 3: 用 ReadLine 读取回复并 Print\n\n\n\n// TODO 4: 发送 \"STATUS?\"，读取并 Print\n\n\n\n// TODO 5: 关闭串口\n\n\nPrint(\"指令测试完成\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "Serial.Open() → Serial.WriteLine(\"TEMP?\") → var reply = Serial.ReadLine()。和网络请求一样，发一条读一条。" },
+    { "level": 2, "text": "WriteLine 发指令，ReadLine 收回复。注意顺序：先发再收。" },
+    { "level": 3, "text": "Serial.Open();\nSerial.WriteLine(\"TEMP?\");\nPrint($\"温度回复: {Serial.ReadLine()}\");\nSerial.WriteLine(\"STATUS?\");\nPrint($\"状态回复: {Serial.ReadLine()}\");\nSerial.Close();\nPrint(\"指令测试完成\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "指令测试完成" },
+  "achievement": { "id": "first_cmd", "name": "指令通讯", "description": "第一次用 WriteLine 向设备发送指令" }
+}

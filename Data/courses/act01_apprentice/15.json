@@ -1,0 +1,33 @@
+{
+  "id": "15",
+  "title": "多台设备有公有私",
+  "scene": {
+    "narrative": "车间里 5 台烘干箱一字排开。老陈指着铭牌说：\"你看，每台的'出厂编号'不一样，但'生产厂家'都是同一个——'智造设备有限公司'。在代码里，出厂编号是实例字段——每台一个值；生产厂家是静态字段——所有实例共享一个值。\"\n\n\"static 关键字就是干这个的。静态成员属于类本身，不属于任何一个实例。改一次，所有实例都能看到。\"",
+    "task": "建一个 DryerBox 类，有一个静态字段 Manufacturer = \"智造设备有限公司\"，有一个实例字段 SerialNumber。创建 3 台设备，分别设不同编号，然后 Print 出厂编号 + 厂家。最后看看改静态字段后所有实例是不是都变了。"
+  },
+  "concepts": ["static 字段", "静态 vs 实例", "共享数据"],
+  "factory": {
+    "layout": "multi_device",
+    "devices": [
+      { "type": "DryerBox", "id": "box_1", "label": "烘干箱 1号", "temp": 28.0 },
+      { "type": "DryerBox", "id": "box_2", "label": "烘干箱 2号", "temp": 30.0 },
+      { "type": "DryerBox", "id": "box_3", "label": "烘干箱 3号", "temp": 26.0 }
+    ]
+  },
+  "template": "// 烘干箱有公有的厂家信息和私有的编号\n\n// TODO 1: 定义 DryerBox 类，包含:\n//   - public static string Manufacturer = \"智造设备有限公司\";  (静态，共享)\n//   - public string SerialNumber;  (实例，每台不同)\n\n\n{\n\n\n}\n\n// TODO 2: 创建3台设备，分别赋不同的 SerialNumber (\"SN-001\", \"SN-002\", \"SN-003\")\n\n\n\n\n\n// TODO 3: 写一个 PrintInfo(DryerBox box) 方法，打印编号和厂家\n\n\n{\n\n}\n\n// TODO 4: 对三台设备分别调用 PrintInfo\n\n\n\n\n// TODO 5: 修改静态字段 DryerBox.Manufacturer = \"新智造集团\";\n\n\n// TODO 6: 再打印三台设备，看看厂家是不是全变了\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "类里: public static string Manufacturer = \"智造设备有限公司\"; 外部访问: DryerBox.Manufacturer。实例字段: public string SerialNumber;" },
+    { "level": 2, "text": "方法: void PrintInfo(DryerBox box) { Print($\"编号:{box.SerialNumber} 厂家:{DryerBox.Manufacturer}\"); }" },
+    { "level": 3, "text": "class DryerBox\n{\n    public static string Manufacturer = \"智造设备有限公司\";\n    public string SerialNumber;\n}\n\nvar b1 = new DryerBox(); b1.SerialNumber = \"SN-001\";\nvar b2 = new DryerBox(); b2.SerialNumber = \"SN-002\";\nvar b3 = new DryerBox(); b3.SerialNumber = \"SN-003\";\n\nvoid PrintInfo(DryerBox b) { Print($\"{b.SerialNumber} @ {DryerBox.Manufacturer}\"); }\nPrintInfo(b1); PrintInfo(b2); PrintInfo(b3);\n\nDryerBox.Manufacturer = \"新智造集团\";\nPrint(\"--- 厂家变更后 ---\");\nPrintInfo(b1); PrintInfo(b2); PrintInfo(b3);" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "新智造集团"
+  },
+  "achievement": {
+    "id": "first_static",
+    "name": "静态字段",
+    "description": "第一次理解 static 共享数据"
+  }
+}

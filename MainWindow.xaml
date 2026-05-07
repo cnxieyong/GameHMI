@@ -1,0 +1,178 @@
+<Window x:Class="GameHMI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        Title="智造工厂" MinHeight="600" MinWidth="900"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Background="#0d1117" Foreground="#c9d1d9">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#161b22" BorderBrush="#30363d" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+                <TextBlock Text="⚙ 智造工厂" FontSize="16" FontWeight="Bold" Foreground="#58a6ff"/>
+                <TextBlock x:Name="HeaderTitle" Text="  第一幕 · 产线学徒" Foreground="#8b949e" FontSize="12" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                <Button Content="🗺 地图" Width="72" Height="28" Background="#21262d"
+                        Foreground="#8b949e" BorderThickness="0" FontSize="11" Cursor="Hand"
+                        Margin="16,0,0,0" Click="MapBtn_Click"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280" MinWidth="220"/>
+                <ColumnDefinition Width="*" MinWidth="300"/>
+                <ColumnDefinition Width="280" MinWidth="220"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 左：工厂 -->
+            <Border Grid.Column="0" Background="#161b22" BorderBrush="#30363d" BorderThickness="0,0,1,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="16">
+                    <TextBlock Text="虚拟车间" Foreground="#8b949e" FontSize="12" FontWeight="Bold" Margin="0,0,0,12"/>
+                    <StackPanel x:Name="FactoryPanel"/>
+
+                    <!-- 技能树 -->
+                    <Border Background="#0d1117" CornerRadius="8" BorderBrush="#21262d" BorderThickness="1" Padding="14">
+                        <StackPanel>
+                            <TextBlock Text="🌱 技能树" Foreground="#8b949e" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock Text="已掌握: Console.WriteLine, 变量, if/else" Foreground="#3fb950" FontSize="10" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- 中：编辑器 -->
+            <Grid Grid.Column="1" Background="#0d1117">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="140"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="你的代码" Foreground="#8b949e" FontSize="12" FontWeight="Bold" Margin="16,12,0,0"/>
+                <Border Grid.Row="0" Margin="16,32,16,0" Background="#010409" CornerRadius="8" BorderBrush="#30363d" BorderThickness="1">
+                    <avalonedit:TextEditor x:Name="CodeBox"
+                             Background="#010409" Foreground="#c9d1d9"
+                             BorderThickness="0" Margin="12"
+                             FontFamily="Consolas" FontSize="14"
+                             WordWrap="False"
+                             ShowLineNumbers="True"
+                             HorizontalScrollBarVisibility="Auto"
+                             VerticalScrollBarVisibility="Auto"/>
+                </Border>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="16,10">
+                    <Button x:Name="RunBtn" Content="▶ 运行" Width="100" Height="36"
+                            Background="#238636" Foreground="White" BorderThickness="0"
+                            FontWeight="Bold" FontSize="14" Cursor="Hand" Click="RunBtn_Click"/>
+                    <Button x:Name="CheatBtn" Content="⚡直接过关" Width="80" Height="36"
+                            Background="#b08800" Foreground="#0d1117" BorderThickness="0"
+                            FontSize="11" Cursor="Hand" Margin="8,0,0,0" Click="CheatBtn_Click"/>
+                    <Button Content="↺ 重置" Width="80" Height="36" Background="#30363d"
+                            Foreground="#c9d1d9" BorderThickness="0" FontSize="13" Cursor="Hand"
+                            Margin="8,0,0,0" Click="ResetBtn_Click"/>
+                    <Border Width="1" Background="#30363d" Margin="16,4"/>
+                    <Button x:Name="PrevBtn" Content="◀ 上一关" Width="72" Height="36"
+                            Background="#21262d" Foreground="#8b949e" BorderThickness="0"
+                            FontSize="12" Cursor="Hand" Click="PrevBtn_Click"
+                            Visibility="Collapsed"/>
+                    <Button x:Name="NextBtn" Content="下一关 ▶" Width="80" Height="36"
+                            Background="#1f6feb" Foreground="White" BorderThickness="0"
+                            FontSize="12" Cursor="Hand" Click="NextBtn_Click"/>
+                </StackPanel>
+                <Border Grid.Row="2" Background="#010409" CornerRadius="8" BorderBrush="#30363d"
+                        BorderThickness="1" Margin="16,4,16,12" Padding="12">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <TextBlock x:Name="ConsoleOut" FontFamily="Consolas" FontSize="13"
+                                   Foreground="#8b949e" Text="按 ▶ 运行 执行代码"/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+
+            <!-- 右：任务 -->
+            <Border Grid.Column="2" Background="#161b22" BorderBrush="#30363d" BorderThickness="1,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="16">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <TextBlock Text="任务简报" Foreground="#8b949e" FontSize="12" FontWeight="Bold"/>
+                        <TextBlock x:Name="LevelLabel" Text="  关 01" Foreground="#58a6ff" FontSize="12" FontWeight="Bold" Margin="8,0,0,0"/>
+                    </StackPanel>
+
+                    <!-- 叙事 -->
+                    <Border Background="#0d1117" CornerRadius="8" Padding="14" BorderBrush="#58a6ff" BorderThickness="3,0,0,0" Margin="0,0,0,10">
+                        <TextBlock x:Name="NarrativeText" Text="师傅老陈：小伙子，第一天上班。先看看烘干箱状态正不正常。" FontSize="13"
+                                   LineHeight="24" Foreground="#c9d1d9" TextWrapping="Wrap"/>
+                    </Border>
+
+                    <!-- 任务目标 -->
+                    <Border Background="#0d1117" CornerRadius="8" Padding="14" BorderBrush="#fdcb6e" BorderThickness="3,0,0,0" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="📋 任务目标" Foreground="#fdcb6e" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                            <TextBlock x:Name="TaskText" Text="用 Print 把烘干箱的状态打印出来。" FontSize="12"
+                                       Foreground="#c9d1d9" TextWrapping="Wrap" LineHeight="20"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 提示 -->
+                    <Border Background="#0d1117" CornerRadius="8" Padding="14" BorderBrush="#30363d" BorderThickness="1" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="💡 提示" Foreground="#8b949e" FontSize="11" FontWeight="Bold" Margin="0,0,0,6"/>
+                            <TextBlock x:Name="HintText" Text="需要帮助时点下方按钮" FontSize="11"
+                                       Foreground="#c9d1d9" TextWrapping="Wrap" LineHeight="18"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <Border x:Name="Hint1Btn" Background="#21262d" CornerRadius="4"
+                                        Padding="10,4" Cursor="Hand" Tag="1"
+                                        MouseLeftButtonDown="HintBtn_Click">
+                                    <TextBlock Text="一级提示" FontSize="11" Foreground="#8b949e"/>
+                                </Border>
+                                <Border x:Name="Hint2Btn" Background="#21262d" CornerRadius="4"
+                                        Padding="10,4" Cursor="Hand" Tag="2" Margin="6,0,0,0"
+                                        MouseLeftButtonDown="HintBtn_Click">
+                                    <TextBlock Text="二级提示" FontSize="11" Foreground="#8b949e"/>
+                                </Border>
+                                <Border x:Name="Hint3Btn" Background="#21262d" CornerRadius="4"
+                                        Padding="10,4" Cursor="Hand" Tag="3" Margin="6,0,0,0"
+                                        MouseLeftButtonDown="HintBtn_Click">
+                                    <TextBlock Text="三级提示" FontSize="11" Foreground="#8b949e"/>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 技能树 -->
+                    <Border Background="#0d1117" CornerRadius="8" BorderBrush="#21262d" BorderThickness="1" Padding="14">
+                        <StackPanel>
+                            <TextBlock Text="🌱 技能树" Foreground="#8b949e" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock x:Name="ConceptsText" Text="已掌握: Console.WriteLine, 变量, if/else" Foreground="#3fb950" FontSize="10" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- 成就弹窗覆盖层 -->
+        <Border x:Name="AchievementOverlay" Grid.RowSpan="2" Background="#dd0d1117"
+                Visibility="Collapsed" MouseDown="DismissAchievement">
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Background="#161b22" CornerRadius="16" BorderBrush="#3fb950"
+                    BorderThickness="2" Padding="32" MinWidth="280">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock x:Name="AchieveTitle" Text="🏆 成就解锁！" FontSize="22" FontWeight="Bold"
+                               Foreground="#fdcb6e" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                    <TextBlock x:Name="AchieveName" Text="" FontSize="16"
+                               Foreground="#c9d1d9" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                    <StackPanel x:Name="StarsPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                    <TextBlock x:Name="AchieveStars" Text="" FontSize="14"
+                               Foreground="#8b949e" HorizontalAlignment="Center"/>
+                    <TextBlock Text="点击任意处关闭" FontSize="11" Foreground="#484f58"
+                               HorizontalAlignment="Center" Margin="0,12,0,0"/>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</Window>

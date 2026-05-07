@@ -1,0 +1,23 @@
+{
+  "id": "23",
+  "title": "收到的数据乱七八糟",
+  "scene": {
+    "narrative": "设备回复了一长串数据：'OK,TEMP=25.5,HUM=60,PRESS=1.2'。老陈指着屏幕：\"这叫CSV格式——逗号分隔的一串值。你不能整行吞下去，得拆开。第一段是状态，第二段是温度，第三段是湿度，第四段是气压。\"\n\n\"用 string.Split(',')——按逗号切开，得到数组。然后取对应位置的值。温度在索引1，湿度在索引2。\"",
+    "task": "打开串口发指令，用 ReadLine 读到回复后用 Split(',') 拆分。提取温度值（索引1的等号后面）和湿度值（索引2的等号后面），Print 出来。"
+  },
+  "concepts": ["Split()", "Split后取索引", "再次Split提取值"],
+  "factory": {
+    "layout": "single_device",
+    "serialResponse": "OK,TEMP=25.5,HUM=60,PRESS=1.2\n",
+    "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }]
+  },
+  "template": "// 设备返回的 CSV 格式数据: \"OK,TEMP=25.5,HUM=60,PRESS=1.2\"\n\n// TODO 1: 打开串口，读取一行数据\n\n\n\n// TODO 2: 用 Split(',') 把数据按逗号拆成数组\n\n\n// TODO 3: 取数组[1]得到 \"TEMP=25.5\"，再用 Split('=') 拆开取[1]得到温度\n\n\n\n// TODO 4: 取数组[2]得到 \"HUM=60\"，同样方式提取湿度\n\n\n\n// TODO 5: Print 提取后的温度和湿度\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "Split(',') 返回 string[]。parts[0]=\"OK\", parts[1]=\"TEMP=25.5\", parts[2]=\"HUM=60\"。再对 parts[1] 用 Split('=') 得到 [\"TEMP\", \"25.5\"]。" },
+    { "level": 2, "text": "var parts = data.Split(','); var tempPart = parts[1].Split('=')[1]; var humPart = parts[2].Split('=')[1];" },
+    { "level": 3, "text": "Serial.Open();\nvar data = Serial.ReadLine();\nvar parts = data.Split(',');\nvar temp = parts[1].Split('=')[1];\nvar hum = parts[2].Split('=')[1];\nPrint($\"温度: {temp}°C, 湿度: {hum}%\");\nSerial.Close();" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "湿度" },
+  "achievement": { "id": "first_split", "name": "数据解析", "description": "第一次用 Split 解析结构化数据" }
+}

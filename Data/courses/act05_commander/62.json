@@ -1,0 +1,15 @@
+{
+  "id": "62", "title": "异常处理与恢复",
+  "scene": { "narrative": "产线运行中突然出故障——第三段传送带卡住了。\"不能因为一个故障让整条线停！\"老陈喊道。\"要有异常恢复机制：检测故障→尝试恢复（重试3次）→如果恢复不了就隔离该段→其他段继续运行。这才是工业级的容错。\"", "task": "5段产线巡检。每段有3次重试机会读寄存器。如果3次都读不到有效数据（值为0），标记'故障已隔离'并继续。最后打印正常段数和隔离段数。" },
+  "concepts": ["故障恢复", "重试机制", "隔离降级", "容错策略"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 250, "200": 0, "300": 310, "400": 260, "500": 255 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "产线PLC", "temp": 25.5 }] },
+  "template": "// 故障恢复：每段重试3次，失败则隔离\n\n// TODO 1: 数组 stages 和 addrs（同61关）\n\n\n\n// TODO 2: 变量正常=0, 隔离=0\n\n\n// TODO 3: for 遍历5段\n\n{\n    // TODO 4: 内层 for 重试3次\n    //   读寄存器，值>0 → 成功，break\n    //   3次都0 → Print \"隔离\", 隔离++\n\n\n\n\n\n\n}\n\n// TODO 5: 打印故障报告\n\n\n\nPrint(\"===== 故障恢复完成 =====\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "双层 for：外层 i=0..4 遍历工段，内层 r=0..2 重试。" },
+    { "level": 2, "text": "bool recovered = false; for (r=0;r<3;r++) { if (Plc.ReadHoldingRegister(addr) > 0) { recovered=true; break; } } if (!recovered) Print(\"隔离\");" },
+    { "level": 3, "text": "string[] stages = { \"投料\", \"烘干\", \"传送\", \"质检\", \"包装\" };\nint[] addrs = { 100, 200, 300, 400, 500 };\nint ok = 0, iso = 0;\nfor (int i = 0; i < 5; i++) {\n    bool recovered = false;\n    for (int r = 0; r < 3; r++) {\n        if (Plc.ReadHoldingRegister(addrs[i]) > 0) { recovered = true; break; }\n    }\n    if (recovered) { ok++; Print($\"{stages[i]}: 正常\"); }\n    else { iso++; Print($\"{stages[i]}: 故障已隔离\"); }\n}\nPrint($\"正常{ok}段, 隔离{iso}段\");\nPrint(\"===== 故障恢复完成 =====\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "故障恢复完成" },
+  "achievement": { "id": "fault_recovery", "name": "故障恢复", "description": "第一次实现故障检测+重试+隔离机制" }
+}

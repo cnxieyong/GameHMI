@@ -1,0 +1,19 @@
+{
+  "id": "64", "title": "生产报表自动生成",
+  "scene": { "narrative": "月底了，财务等着结算。你要生成一份完整生产报表：三条产线的日产量、月累计、良品率、设备运行率、能耗统计。\"管理要看的是全局——不是某天某台机器的数据，而是汇总的趋势和对比。好的报表让决策有据可依。\"", "task": "定义3条产线的月度数据（类包含产线名、产量、良品、运行小时）。创建数据并计算：各线良品率、总产量、最高产线、平均良品率。格式化打印报表。" },
+  "concepts": ["生产报表", "数据汇总", "KPI计算"],
+  "factory": { "layout": "multi_device", "devices": [
+    { "type": "DryerBox", "id": "l1", "label": "A线", "temp": 25.0 },
+    { "type": "DryerBox", "id": "l2", "label": "B线", "temp": 28.0 },
+    { "type": "DryerBox", "id": "l3", "label": "C线", "temp": 26.0 }
+  ]},
+  "template": "// 月度生产报表\n\n// TODO 1: 定义 LineReport 类: Name, Qty, Good, Hours\n\nclass LineReport { public string Name; public int Qty, Good, Hours; public LineReport(string n, int q, int g, int h) { Name=n; Qty=q; Good=g; Hours=h; } }\n\n// TODO 2: 创建3条线数据\n//   A线: 10000件, 9850良品, 480h\n//   B线: 8000件, 7920良品, 450h\n//   C线: 12000件, 11800良品, 500h\n\n\n\n\n\n// TODO 3: 存入数组，foreach 打印每条线\n\n{\n\n}\n\n// TODO 4: 计算汇总数据: 总产量、平均良品率、最高产线\n\n\n\n\n\nPrint(\"===== 月度报表 =====\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "foreach 里累加 totalQty += r.Qty; totalGood += r.Good; 再找 maxQty。" },
+    { "level": 2, "text": "良品率 = (double)Good / Qty * 100; 平均 = (double)totalGood / totalQty * 100;" },
+    { "level": 3, "text": "class LineReport { public string Name; public int Qty, Good; public LineReport(string n, int q, int g) { Name=n; Qty=q; Good=g; } }\nvar lines = new LineReport[] {\n    new LineReport(\"A线\", 10000, 9850),\n    new LineReport(\"B线\", 8000, 7920),\n    new LineReport(\"C线\", 12000, 11800)\n};\nint tQty=0, tGood=0, maxQty=0; string best=\"\";\nforeach (var l in lines) {\n    tQty+=l.Qty; tGood+=l.Good;\n    double r = l.Good*100.0/l.Qty;\n    Print($\"{l.Name}: {l.Qty}件 良品率{r:F1}%\");\n    if (l.Qty>maxQty) { maxQty=l.Qty; best=l.Name; }\n}\nPrint($\"总产量:{tQty} 平均良品率:{tGood*100.0/tQty:F1}% 最高:{best}\");\nPrint(\"===== 月度报表 =====\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "月度报表" },
+  "achievement": { "id": "report", "name": "生产报表", "description": "第一次生成完整月度生产报表" }
+}

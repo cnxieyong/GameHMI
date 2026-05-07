@@ -1,0 +1,32 @@
+{
+  "id": "09",
+  "title": "不只温度，还有压力",
+  "scene": {
+    "narrative": "车间新装了一个压力传感器，和温度传感器一样挂在烘干箱上。你现在要同时管理温度和压力两个数据。\n\n老陈挠挠头：\"温度一个变量，压力一个变量……要是以后再加湿度、风速呢？散着管要乱套的。温度、压力都是烘干箱的属性，把它们打包成一个 DryerBox 类——一个类就是一个设备的身份证，所有跟这个设备相关的数据都装在里面。\"",
+    "task": "定义一个 DryerBox 类，有 Temperature 和 Pressure 两个 double 字段。创建两个实例（烘干箱A 和 烘干箱B），给它们赋不同的值，然后 Print 出来。"
+  },
+  "concepts": ["class 定义", "字段 field", "new 实例化", "对象"],
+  "factory": {
+    "layout": "multi_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer_a", "label": "烘干箱 A", "temp": 28.0 },
+      { "type": "DryerBox", "id": "dryer_b", "label": "烘干箱 B", "temp": 35.0 }
+    ]
+  },
+  "template": "// 烘干箱有温度和压力两个属性，把它们封装成一个类\n\n// TODO 1: 定义一个 class DryerBox，里面有两个字段:\n//   public double Temperature;\n//   public double Pressure;\n\n{\n}\n\n// TODO 2: new 两个实例，分别叫 boxA 和 boxB\n\n\n\n// TODO 3: 给 boxA 赋值 (温度 28, 压力 1.2)\n\n\n// TODO 4: 给 boxB 赋值 (温度 35, 压力 1.5)\n\n\n// TODO 5: Print 两个烘干箱的温度和压力\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "类定义: class DryerBox { public double Temperature; public double Pressure; }。实例化: var boxA = new DryerBox();" },
+    { "level": 2, "text": "赋值用 . 访问: boxA.Temperature = 28; boxA.Pressure = 1.2;" },
+    { "level": 3, "text": "class DryerBox { public double Temperature; public double Pressure; }\n\nvar boxA = new DryerBox();\nboxA.Temperature = 28;\nboxA.Pressure = 1.2;\n\nvar boxB = new DryerBox();\nboxB.Temperature = 35;\nboxB.Pressure = 1.5;\n\nPrint($\"烘干箱A: {boxA.Temperature}°C, {boxA.Pressure}MPa\");\nPrint($\"烘干箱B: {boxB.Temperature}°C, {boxB.Pressure}MPa\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "MPa"
+  },
+  "achievement": {
+    "id": "first_class",
+    "name": "面向对象入门",
+    "description": "第一次定义类并创建实例"
+  }
+}

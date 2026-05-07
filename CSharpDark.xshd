@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SyntaxDefinition name="C# Dark" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <Color name="Default" foreground="#c9d1d9" />
+  <Color name="Keyword" foreground="#ff7b72" fontWeight="bold" />
+  <Color name="String" foreground="#a5d6ff" />
+  <Color name="Comment" foreground="#8b949e" fontStyle="italic" />
+  <Color name="Number" foreground="#79c0ff" />
+  <Color name="Type" foreground="#d2a8ff" />
+  <Color name="MethodCall" foreground="#d2a8ff" />
+  <Color name="Punctuation" foreground="#c9d1d9" />
+
+  <RuleSet>
+    <Keywords color="Keyword" fontWeight="bold">
+      <Word>abstract</Word><Word>as</Word><Word>base</Word><Word>bool</Word><Word>break</Word>
+      <Word>byte</Word><Word>case</Word><Word>catch</Word><Word>char</Word><Word>checked</Word>
+      <Word>class</Word><Word>const</Word><Word>continue</Word><Word>decimal</Word><Word>default</Word>
+      <Word>delegate</Word><Word>do</Word><Word>double</Word><Word>else</Word><Word>enum</Word>
+      <Word>event</Word><Word>explicit</Word><Word>extern</Word><Word>false</Word><Word>finally</Word>
+      <Word>fixed</Word><Word>float</Word><Word>for</Word><Word>foreach</Word><Word>goto</Word>
+      <Word>if</Word><Word>implicit</Word><Word>in</Word><Word>int</Word><Word>interface</Word>
+      <Word>internal</Word><Word>is</Word><Word>lock</Word><Word>long</Word><Word>namespace</Word>
+      <Word>new</Word><Word>null</Word><Word>object</Word><Word>operator</Word><Word>out</Word>
+      <Word>override</Word><Word>params</Word><Word>private</Word><Word>protected</Word><Word>public</Word>
+      <Word>readonly</Word><Word>ref</Word><Word>return</Word><Word>sbyte</Word><Word>sealed</Word>
+      <Word>short</Word><Word>sizeof</Word><Word>stackalloc</Word><Word>static</Word><Word>string</Word>
+      <Word>struct</Word><Word>switch</Word><Word>this</Word><Word>throw</Word><Word>true</Word>
+      <Word>try</Word><Word>typeof</Word><Word>uint</Word><Word>ulong</Word><Word>unchecked</Word>
+      <Word>unsafe</Word><Word>ushort</Word><Word>using</Word><Word>var</Word><Word>virtual</Word>
+      <Word>void</Word><Word>volatile</Word><Word>while</Word>
+    </Keywords>
+
+    <Span color="String">
+      <Begin>"</Begin>
+      <End>"</End>
+      <RuleSet>
+        <Span begin="{" end="}" />
+      </RuleSet>
+    </Span>
+
+    <Span color="String">
+      <Begin>\$"</Begin>
+      <End>"</End>
+      <RuleSet>
+        <Span begin="{" end="}" />
+      </RuleSet>
+    </Span>
+
+    <Span color="Comment">
+      <Begin>//</Begin>
+    </Span>
+
+    <Span color="Comment" multiline="true">
+      <Begin>/*</Begin>
+      <End>*/</End>
+    </Span>
+
+    <Rule color="Number">\b0[xX][0-9a-fA-F]+</Rule>
+    <Rule color="Number">\b\d+\.?\d*[fFdDmM]?\b</Rule>
+  </RuleSet>
+</SyntaxDefinition>

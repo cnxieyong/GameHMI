@@ -1,0 +1,19 @@
+{
+  "id": "25",
+  "title": "校验不通过",
+  "scene": {
+    "narrative": "老陈皱着眉头看数据日志：\"这批数据有几条不对劲。你看第三行，温度突然跳到 999——这明显是传输错误。好的通讯协议都有校验机制，比如每条数据最后带两位校验和，接收端算一遍对比，对不上就扔掉。\"\n\n\"先学最简单的：数据里如果有明显异常值（比如温度 > 200 或者 < -50），就判定为无效数据跳过。实际项目里会用更复杂的 CRC 校验。\"",
+    "task": "模拟串口发来5条温度数据，其中第3条是 \"T=999\"（异常值）。用 while 循环读取，对每条数据提取温度值，如果温度超过 150 就 Print '数据异常，跳过'，否则正常打印。"
+  },
+  "concepts": ["数据校验", "异常值过滤", "条件判断实践"],
+  "factory": { "layout": "single_device", "serialResponse": "T=25.5\nT=26.0\nT=999\nT=26.5\nT=26.2\n", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }] },
+  "template": "// 串口发来 5 条温度数据，第 3 条是异常值需要过滤\n\n// TODO 1: 打开串口\n\n\n// TODO 2: while 循环读取每一行\n\n{\n    // TODO 3: 用 Split('=') 提取温度值，用 double.Parse 转数字\n\n\n    // TODO 4: if 判断温度 > 150 → Print \"数据异常，跳过\"\n    //    else → Print $\"温度: {temp}°C\"\n\n}\n\nPrint(\"校验完成\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "提取: var temp = double.Parse(line.Split('=')[1]); 校验: if (temp > 150 || temp < -50) 跳过。" },
+    { "level": 2, "text": "while 里先 Parse 提取温度值，再 if 判断是否在合理范围内。不合理的用 else 走正常打印。" },
+    { "level": 3, "text": "Serial.Open();\nstring? line;\nwhile ((line = Serial.ReadLine()) != null)\n{\n    double temp = double.Parse(line.Split('=')[1]);\n    if (temp > 150 || temp < -50)\n        Print(\"数据异常，跳过\");\n    else\n        Print($\"温度: {temp}°C\");\n}\nSerial.Close();\nPrint(\"校验完成\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "数据异常" },
+  "achievement": { "id": "first_validate", "name": "数据校验", "description": "第一次实现数据有效性校验" }
+}

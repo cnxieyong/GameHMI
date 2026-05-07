@@ -1,0 +1,15 @@
+{
+  "id": "42", "title": "配方一键切换",
+  "scene": { "narrative": "\"A产品要 85°C 中速，B产品要 120°C 高速——每次换产品都要手动改一堆参数，烦死了。\"老陈挠头。\"把每种产品的参数打包成'配方'——温度、速度、加热时间全存一起。切换产品时一键加载全部参数到对应的 PLC 寄存器。\"", "task": "定义 Recipe 类存两组参数：A产品(85°C, 1500RPM) 和 B产品(120°C, 3000RPM)。写一个 LoadRecipe 方法把配方参数写进 PLC 寄存器，然后验证写入。" },
+  "concepts": ["配方管理", "类封装", "批量写入"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 0, "101": 0 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 配方类：封装一组工艺参数\n\n// TODO 1: 定义 Recipe 类: string Name; ushort Temp; ushort Speed;\n//   构造函数 Recipe(string name, ushort temp, ushort speed)\n\n\n{\n\n\n}\n\n// TODO 2: 创建两个配方实例\n\n\n\n\n// TODO 3: 写 LoadRecipe(Recipe r) 方法\n//   把 r.Temp 写入寄存器100，r.Speed 写入寄存器101\n//   Print $\"加载配方: {r.Name}\"\n\n{\n\n\n\n}\n\n// TODO 4: 加载配方A，验证读取；再加载配方B，验证读取\n\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "class Recipe { public string Name; public ushort Temp; public ushort Speed; public Recipe(string n, ushort t, ushort s) { Name=n; Temp=t; Speed=s; } }" },
+    { "level": 2, "text": "LoadRecipe: Plc.WriteHoldingRegister(100, r.Temp); Plc.WriteHoldingRegister(101, r.Speed);" },
+    { "level": 3, "text": "class Recipe { public string Name; public ushort Temp; public ushort Speed; public Recipe(string n, ushort t, ushort s) { Name=n; Temp=t; Speed=s; } }\n\nvoid LoadRecipe(Recipe r) {\n    Plc.WriteHoldingRegister(100, r.Temp);\n    Plc.WriteHoldingRegister(101, r.Speed);\n    Print($\"加载配方: {r.Name} — 温度{r.Temp/10.0}°C, 转速{r.Speed}RPM\");\n}\n\nvar recipeA = new Recipe(\"A产品\", 850, 1500);\nvar recipeB = new Recipe(\"B产品\", 1200, 3000);\nLoadRecipe(recipeA);\nPrint($\"验证: 温度={Plc.ReadHoldingRegister(100)/10.0}°C\");\nLoadRecipe(recipeB);\nPrint($\"验证: 温度={Plc.ReadHoldingRegister(100)/10.0}°C\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "B产品" },
+  "achievement": { "id": "recipe", "name": "配方管理", "description": "第一次实现配方一键切换" }
+}

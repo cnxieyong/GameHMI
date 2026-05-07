@@ -1,0 +1,40 @@
+<Window x:Class="GameHMI.CourseMapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="关卡地图" Height="600" Width="900"
+        WindowStartupLocation="CenterOwner" WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+
+    <Border Background="#0d1117" CornerRadius="16" BorderBrush="#30363d" BorderThickness="2">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 标题栏 -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
+            <TextBlock Text="🗺 第一幕 · 产线学徒" FontSize="20" FontWeight="Bold" Foreground="#58a6ff"/>
+            <Button Content="✕" Width="32" Height="32" Background="Transparent"
+                    Foreground="#8b949e" BorderThickness="0" FontSize="16" Cursor="Hand"
+                    HorizontalAlignment="Right" Click="CloseBtn_Click"/>
+        </StackPanel>
+
+        <!-- 进度条 -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,16">
+            <TextBlock x:Name="ProgressText" Text="已通关: 0/20" Foreground="#8b949e" FontSize="12"
+                       HorizontalAlignment="Center" Margin="0,0,0,8"/>
+            <Border Background="#21262d" CornerRadius="4" Height="8" Width="400" HorizontalAlignment="Center">
+                <Border x:Name="ProgressBar" Background="#238636" CornerRadius="4" Width="0" HorizontalAlignment="Left"/>
+            </Border>
+        </StackPanel>
+
+        <!-- 关卡网格 -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Visible">
+            <StackPanel x:Name="LevelGrid" MinHeight="2000"/>
+        </ScrollViewer>
+    </Grid>
+    </Border>
+</Window>

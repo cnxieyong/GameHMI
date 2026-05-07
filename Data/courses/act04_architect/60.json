@@ -1,0 +1,18 @@
+{
+  "id": "60", "title": "阶段考核：可扩展上位机框架",
+  "scene": { "narrative": "技术总监亲自出题：\"半年来你从学徒做到了自动化工程师。今天考核你的架构设计能力——搭建一个可扩展的上位机框架。要支持多种设备类型、多种通讯协议、配置驱动、操作审计。设计好类结构、接口定义、模块划分——然后写代码验证你的设计。从执行者变成设计者，这才是真正的架构师。\"", "task": "设计上位机框架：1) Device 抽象基类 2) 两个子类设备 3) IProtocol 接口 4) 日志系统 5) 配置驱动加载。写出关键代码并验证多态调用。" },
+  "concepts": ["架构设计", "OOP体系", "接口隔离", "模块化"],
+  "factory": { "layout": "multi_device", "plcRegisters": { "100": 255 }, "devices": [
+    { "type": "DryerBox", "id": "d1", "label": "烘干箱", "temp": 25.5 },
+    { "type": "DryerBox", "id": "d2", "label": "传送带", "temp": 30.0 }
+  ]},
+  "template": "// ===== 可扩展上位机框架 =====\n\n// TODO 1: 定义 IProtocol 接口 (Connect, Read, Disconnect)\n\n\n\n\n\n// TODO 2: 定义 Device 抽象基类 (Id, Name, Protocol, Check)\n\n\n\n\n\n\n\n// TODO 3: 实现一个子类: DryerBox : Device\n//   Check() 调用 Protocol.Read() 获取数据\n\n\n\n\n\n// TODO 4: 创建配置数组，遍历创建设备实例\n\n\n\n\n\n// TODO 5: foreach 调用 Check() → 多态验证\n\n\n\n\n\nPrint(\"===== 框架验证完成 =====\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "接口→抽象基类→子类实现→配置驱动→多态调用。这就是上位机框架的核心骨架。" },
+    { "level": 2, "text": "abstract class Device { public string Id; public string Name; public IProtocol Protocol; public abstract void Check(); }" },
+    { "level": 3, "text": "interface IProtocol { string Name { get; } string Read(); }\n\nabstract class Device { public string Id; public string Name; public IProtocol Proto; public abstract string Check(); }\n\nclass DryerBox : Device {\n    public override string Check() { return $\"{Proto.Name}: {Proto.Read()}\"; }\n}\n\nclass ModbusProto : IProtocol {\n    public string Name => \"Modbus\";\n    public string Read() { return \"temp=25.5\"; }\n}\n\nvar d = new DryerBox { Id=\"D1\", Name=\"烘干箱\", Proto=new ModbusProto() };\nPrint(d.Check());\nPrint(\"===== 框架验证完成 =====\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "框架验证完成" },
+  "achievement": { "id": "act4_clear", "name": "系统架构师认证", "description": "完成第四幕全部关卡，晋升为产线指挥官" }
+}

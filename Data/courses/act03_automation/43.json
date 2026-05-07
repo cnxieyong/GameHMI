@@ -1,0 +1,15 @@
+{
+  "id": "43", "title": "报警来了不能全停",
+  "scene": { "narrative": "车间主任拍桌子：\"上次温度高了一点点，程序就把整条线停了——损失了好几万！报警要分级：一般报警（温度 30-35°C）降功率就行，严重报警（>35°C）才停机，急停按钮才是全停。不同级别不同处理策略。\"", "task": "读寄存器 100（温度×10），根据温度值分三级处理：<300 正常 → 300-350 写寄存器 200=50（降功率到 50%）→ >350 写线圈 10=true（停机）。Print 对应等级和动作。" },
+  "concepts": ["多级报警", "分级处理", "工业安全"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 320, "200": 100 }, "plcCoils": { "10": false }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 32.0 }] },
+  "template": "// 报警分级：一般报警降功率，严重报警才停机\n\n// TODO 1: 读寄存器100，转换成实际温度（除以10）\n\n\n\n// TODO 2: 用 if / else if 分三级判断\n//   < 30.0  → Print \"正常\"\n//   30-35  → 写寄存器200=50，Print \"降功率\"\n//   > 35   → 写线圈10=true，Print \"停机\"\n\n\n\n{\n\n\n}\n\n{\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "double temp = Plc.ReadHoldingRegister(100) / 10.0; 然后 if (temp < 30) ... else if (temp <= 35) ... else ..." },
+    { "level": 2, "text": "降功率: Plc.WriteHoldingRegister(200, 50); 停机: Plc.WriteCoil(10, true);" },
+    { "level": 3, "text": "double temp = Plc.ReadHoldingRegister(100) / 10.0;\nif (temp < 30)\n    Print($\"{temp:F1}°C 正常\");\nelse if (temp <= 35)\n{\n    Plc.WriteHoldingRegister(200, 50);\n    Print($\"{temp:F1}°C 黄色预警，降功率至50%\");\n}\nelse\n{\n    Plc.WriteCoil(10, true);\n    Print($\"{temp:F1}°C 红色停机！\");\n}" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "降功率" },
+  "achievement": { "id": "alarm_level", "name": "分级报警", "description": "第一次实现多级报警分级处理" }
+}

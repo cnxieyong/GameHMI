@@ -1,0 +1,31 @@
+{
+  "id": "18",
+  "title": "设备运行模式",
+  "scene": {
+    "narrative": "车间主任拿来一份新的操作规程：\"烘干箱现在有三种运行模式——手动模式操作工自己调温度、半自动模式根据预设配方调、全自动模式根据传感器反馈实时调。每种模式的加热策略不一样。\"\n\n\"老陈说：\"用 enum（枚举）定义这三种模式，再用 switch 根据当前模式执行不同的逻辑。enum 的好处是——不会写错字，'半自动'就是 Mode.SemiAuto，不是随便写的字符串。\"",
+    "task": "定义一个 enum Mode { Manual, SemiAuto, FullAuto }。写一个 RunMode(Mode mode) 方法，用 switch 根据模式打印不同的操作说明。然后分别用三种模式调用它。"
+  },
+  "concepts": ["enum 枚举", "switch/case", "break", "default"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 28.5 }
+    ]
+  },
+  "template": "// 三种运行模式，用 enum + switch 统一管理\n\n// TODO 1: 定义枚举 Mode，包含 Manual, SemiAuto, FullAuto\n\n\n\n// TODO 2: 写 RunMode(Mode mode) 方法\n//   用 switch(mode) 判断:\n//     Manual → Print \"手动模式: 请操作工手动调节温度旋钮\"\n//     SemiAuto → Print \"半自动模式: 根据预设配方自动控温，操作工监控\"\n//     FullAuto → Print \"全自动模式: 传感器反馈实时调节，无人值守\"\n\n\n{\n\n\n\n\n\n\n\n\n\n}\n\n// TODO 3: 分别用三种模式调用 RunMode\n\n\n\n\n// TODO 4: 当前默认是 SemiAuto，用 if 判断如果是 Manual 就提示 \"注意安全\"\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "enum 定义: enum Mode { Manual, SemiAuto, FullAuto }。switch: switch(mode) { case Mode.Manual: ... break; case Mode.SemiAuto: ... break; ... }" },
+    { "level": 2, "text": "每个 case 用 break 结尾。default 可以不加（三种都已经覆盖了），加一个 default 更稳妥。" },
+    { "level": 3, "text": "enum Mode { Manual, SemiAuto, FullAuto }\n\nvoid RunMode(Mode mode)\n{\n    switch (mode)\n    {\n        case Mode.Manual:\n            Print(\"手动模式: 请操作工手动调节温度旋钮\");\n            break;\n        case Mode.SemiAuto:\n            Print(\"半自动模式: 根据预设配方自动控温\");\n            break;\n        case Mode.FullAuto:\n            Print(\"全自动模式: 传感器反馈实时调节\");\n            break;\n    }\n}\n\nRunMode(Mode.Manual);\nRunMode(Mode.SemiAuto);\nRunMode(Mode.FullAuto);" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "全自动"
+  },
+  "achievement": {
+    "id": "first_enum",
+    "name": "枚举开关",
+    "description": "第一次用 enum + switch 管理状态"
+  }
+}

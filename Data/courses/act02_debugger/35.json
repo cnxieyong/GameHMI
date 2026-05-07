@@ -1,0 +1,18 @@
+{
+  "id": "35", "title": "阶段考核：多设备监控系统",
+  "scene": { "narrative": "老陈把厚厚一沓设备说明书放在你桌上：\"来了两个月了。今天给你真家伙——5台设备挂在串口总线上，每台有不同地址、不同数据格式。你要写出完整的多设备轮询监控系统：逐台查询、解析数据、过滤异常、输出报表。这是设备调试员的转正考核。\"", "task": "设计一个完整的多设备监控系统：1) 5台设备轮询 2) 解析每台的数据格式 3) 过滤异常数据 4) 统计有效数据数量 5) 输出巡检报表。通过这关，你就是正式设备调试员了。" },
+  "concepts": ["综合考核", "轮询", "数据解析", "异常过滤", "报表"],
+  "factory": { "layout": "multi_device", "serialResponse": "DEV1,T=25.5,OK\nDEV2,T=30.2,OK\nDEV3,T=999,ERR\nDEV4,T=28.0,OK\nDEV5,T=26.8,OK\n", "devices": [
+    { "type": "DryerBox", "id": "d1", "label": "温控表1", "temp": 25.5 },
+    { "type": "DryerBox", "id": "d2", "label": "温控表2", "temp": 30.2 }
+  ]},
+  "template": "// ===== 多设备监控系统 =====\n// 5台设备，逐台轮询，解析数据，输出报表\n\n// 设备名称映射（用数组即可）\nstring[] names = { \"烘干箱A\", \"烘干箱B\", \"冷却塔\", \"传送带\", \"包装机\" };\nint total = 0, valid = 0, errors = 0;\n\n// TODO 1: 打开串口\n\n\n// TODO 2: 循环读取5条数据 (i=0到4)\n\n{\n    // TODO 3: 读取一行数据\n\n\n    // TODO 4: 总计数 +1\n\n\n    // TODO 5: 用 Split(',') 解析，取温度值\n    //   如果温度 > 150 或数据异常 → errors++，Print \"异常\"\n    //   否则 → valid++，Print 设备名和温度\n\n\n\n\n\n}\n\n// TODO 6: 输出报表统计\n\n\n\n\nPrint(\"===== 巡检报表完成 =====\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "数据格式: \"DEV1,T=25.5,OK\"。用 Split(',') 取 [1] 得到 \"T=25.5\"，再 Split('=') 取 [1] 得到温度。Parse 后判断是否 > 150。" },
+    { "level": 2, "text": "for 循环里：读数据 → total++ → Split 解析 → if(temp > 150) errors++ else valid++。循环结束后 Print 统计。" },
+    { "level": 3, "text": "string[] names = { \"烘干箱A\", \"烘干箱B\", \"冷却塔\", \"传送带\", \"包装机\" };\nint total = 0, valid = 0, errors = 0;\nSerial.Open();\nfor (int i = 0; i < 5; i++)\n{\n    var data = Serial.ReadLine();\n    if (data == null) continue;\n    total++;\n    var parts = data.Split(',');\n    var tempPart = parts[1].Split('=')[1];\n    double temp = double.Parse(tempPart);\n    if (temp > 150) { errors++; Print($\"{names[i]} 异常\"); }\n    else { valid++; Print($\"{names[i]}: {temp}°C\"); }\n}\nSerial.Close();\nPrint($\"总采集{total}条, 有效{valid}条, 异常{errors}条\");\nPrint(\"===== 巡检报表完成 =====\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "巡检报表完成" },
+  "achievement": { "id": "act2_clear", "name": "设备调试员转正", "description": "完成第二幕全部关卡，晋升为自动化工程师" }
+}

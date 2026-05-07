@@ -1,0 +1,15 @@
+{
+  "id": "48", "title": "批量配置参数",
+  "scene": { "narrative": "工艺部发来一份 Excel——新产品的 20 个工艺参数要全部配进 PLC。一个一个写太慢了。\"用 Dictionary 存所有参数，foreach 遍历一次性批量写入。写完后读回来验证是否全部写入成功。这不只是写 PLC——这是生产工艺数字化的第一步。\"", "task": "创建一个 Dictionary 存 5 个参数（地址→值映射）。写一个 BatchWrite 方法遍历 Dictionary 批量写入 PLC。然后写 BatchVerify 方法读回来验证。如果任何一项读回值和写入值不同，打印失败。" },
+  "concepts": ["批量写入", "验证机制", "Dictionary遍历"],
+  "factory": { "layout": "single_device", "plcRegisters": {}, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 批量写入参数，再逐项验证\n\n// TODO 1: 创建 Dictionary<int, ushort> params\n//   {100, 850}, {101, 1500}, {102, 60}, {103, 1}, {104, 500}\n\n\n\n\n// TODO 2: 写 BatchWrite(Dictionary<int,ushort> p) — foreach 遍历，WriteHoldingRegister\n\n{\n\n\n\n}\n\n// TODO 3: 写 BatchVerify(Dictionary<int,ushort> p) — 逐项读回，比较\n//   不一致就 Print \"验证失败\"，全通过就 Print \"验证通过\"\n\n{\n\n\n\n\n\n\n}\n\n// TODO 4: 调用 BatchWrite，再调用 BatchVerify\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "BatchWrite: foreach (var kv in p) Plc.WriteHoldingRegister(kv.Key, kv.Value);" },
+    { "level": 2, "text": "Verify: foreach (var kv in p) { if (Plc.ReadHoldingRegister(kv.Key) != kv.Value) fail = true; }" },
+    { "level": 3, "text": "var parameters = new Dictionary<int, ushort>() { {100,850}, {101,1500}, {102,60}, {103,1}, {104,500} };\n\nvoid BatchWrite(Dictionary<int,ushort> p) {\n    foreach (var kv in p) Plc.WriteHoldingRegister(kv.Key, kv.Value);\n    Print(\"批量写入完成\");\n}\n\nvoid BatchVerify(Dictionary<int,ushort> p) {\n    bool ok = true;\n    foreach (var kv in p) {\n        if (Plc.ReadHoldingRegister(kv.Key) != kv.Value) {\n            Print($\"地址{kv.Key}验证失败\");\n            ok = false;\n        }\n    }\n    if (ok) Print(\"全部验证通过\");\n}\n\nBatchWrite(parameters);\nBatchVerify(parameters);" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "验证通过" },
+  "achievement": { "id": "batch_write", "name": "批量配置", "description": "第一次实现批量参数写入和验证" }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "26",
+  "title": "多台设备共用串口",
+  "scene": {
+    "narrative": "老陈带你走到设备柜前：\"这4台温控表全挂在同一根 RS485 总线上，共用 COM3 这一个串口。但每台设备有唯一的地址——01、02、03、04。你要轮询它们：先问 01 号，读回复；再问 02 号，读回复……依次问完 4 台。\"\n\n\"这种一对多通讯要用 Dictionary 存地址到设备名的映射，然后用 for 循环逐个地址发指令查询。\"",
+    "task": "有四台设备，地址 01-04。用 Dictionary<int,string> 存地址→设备名映射。用 for 循环遍历地址 1-4，发指令 \"QUERY,{地址}\"，读回复，打印设备名和温度。"
+  },
+  "concepts": ["Dictionary<K,V>", "轮询逻辑", "RS485 多从站"],
+  "factory": { "layout": "multi_device", "serialResponse": "DEV01,T=25.5\nDEV02,T=30.2\nDEV03,T=28.0\nDEV04,T=32.1\n", "devices": [
+    { "type": "DryerBox", "id": "d1", "label": "温控表01", "temp": 25.5 },
+    { "type": "DryerBox", "id": "d2", "label": "温控表02", "temp": 30.2 }
+  ]},
+  "template": "// 4台温控表共用一个串口，用 Dictionary 管理设备名，轮询采集数据\n\n// TODO 1: 创建 Dictionary<int, string>，添加 4 台设备的地址和名称\n\n\n\n\n// TODO 2: 打开串口\n\n\n// TODO 3: for 循环 i=1 到 4，模拟轮询每台设备，每次读完一行 Print\n\n{\n\n\n\n}\n\nPrint(\"轮询完成\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "var dict = new Dictionary<int, string>() { {1,\"烘干箱\"}, {2,\"冷却塔\"}, {3,\"传送带\"}, {4,\"包装机\"} };" },
+    { "level": 2, "text": "for (int i = 1; i <= 4; i++) { var data = Serial.ReadLine(); Print($\"{dict[i]}: {data}\"); }" },
+    { "level": 3, "text": "var names = new Dictionary<int, string>() { {1,\"烘干箱\"}, {2,\"冷却塔\"}, {3,\"传送带\"}, {4,\"包装机\"} };\nSerial.Open();\nfor (int i = 1; i <= 4; i++)\n{\n    var data = Serial.ReadLine();\n    Print($\"{names[i]}: {data}\");\n}\nPrint(\"轮询完成\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "轮询完成" },
+  "achievement": { "id": "first_poll", "name": "轮询采集", "description": "第一次实现多设备轮询采集" }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "29", "title": "不同厂家不同协议",
+  "scene": { "narrative": "车间里两种设备混用：松下的温控表返回 'PANA,25.5,OK'，欧姆龙的返回 'OMRON:T=25.5;ST=1'。格式完全不同。你得写一个方法根据厂家前缀分发到不同的解析逻辑。\"工控行业就是这样——不同品牌协议各不相同，你得学会适配。\"", "task": "串口返回两种格式的数据。写两个方法 ParsePanasonic(string) 和 ParseOmron(string)，根据行前缀调用不同解析方法。" },
+  "concepts": ["协议适配", "方法封装", "StartsWith 分发"],
+  "factory": { "layout": "single_device", "serialResponse": "PANA,25.5,OK\nOMRON:T=30.2;ST=1\nPANA,26.0,OK\n", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }] },
+  "template": "// 两种品牌，两种协议 — 写两个解析方法\n\n// TODO 1: 写 ParsePanasonic(string line) 方法\n//   格式 \"PANA,温度,状态\" → Print 温度\n\n{\n\n}\n\n// TODO 2: 写 ParseOmron(string line) 方法\n//   格式 \"OMRON:T=温度;ST=状态\" → Split 提取温度，Print\n\n{\n\n\n\n}\n\n// TODO 3: 打开串口，while 读取\n//   用 StartsWith 判断品牌，调用对应解析方法\n\n{\n\n\n\n\n\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "Panasonic: Split(',') 取 [1] 就是温度。Omron: Split(';') 再 Split('=') 取温度。" },
+    { "level": 2, "text": "if (line.StartsWith(\"PANA\")) ParsePanasonic(line); else if (line.StartsWith(\"OMRON\")) ParseOmron(line);" },
+    { "level": 3, "text": "void ParsePana(string l) { Print($\"松下: {l.Split(',')[1]}°C\"); }\nvoid ParseOmron(string l) { var t = l.Split(';')[0].Split('=')[1]; Print($\"欧姆龙: {t}°C\"); }\nSerial.Open();\nstring? line;\nwhile ((line=Serial.ReadLine())!=null)\n{\n    if (line.StartsWith(\"PANA\")) ParsePana(line);\n    else if (line.StartsWith(\"OMRON\")) ParseOmron(line);\n}" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "欧姆龙" },
+  "achievement": { "id": "protocol_adapter", "name": "协议适配", "description": "第一次实现多协议适配" }
+}

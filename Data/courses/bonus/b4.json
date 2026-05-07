@@ -1,0 +1,11 @@
+{
+  "id": "B4", "title": "沙盒自由模式",
+  "scene": { "narrative": "恭喜！你已经完成了全部 65 关课程。现在车间完全交给你——没有任务、没有限制、没有提示。你有温度传感器、电机、加热器、串口、PLC——所有设备随便用。写任何你想写的代码：做个自动温控系统、写个数据采集器、搭个报警中心……这是你的工厂，你是主人。", "task": "自由发挥！没有胜利条件——写你想写的代码，控制你想控制的设备。这是你的沙盒。" },
+  "concepts": ["自由编程", "创造力", "无限制"],
+  "factory": { "layout": "single_device", "devices": [{ "type": "DryerBox", "id": "d", "label": "你的工厂", "temp": 25.5 }] },
+  "template": "// ===== 沙盒自由模式 =====\n// 所有设备由你掌控。例子：\n// Print($\"温度: {SensorTemp}°C\");\n// MotorOn = true;  // 启动电机\n// MotorSpeed_Result = 1500;  // 设转速\n// HeaterOn = true;  // 开加热器\n\n// Serial.Open() / Serial.ReadLine() — 虚拟串口\n// Plc.ReadHoldingRegister(100) — 读PLC\n// Plc.WriteCoil(0, true) — 控制线圈\n\n// 没有任何限制，写你想写的！\n\n\n",
+  "maxRuntimeMs": 10000,
+  "hints": [],
+  "winCondition": { "type": "console_contains", "value": "" },
+  "achievement": { "id": "sandbox", "name": "工厂之主", "description": "进入沙盒自由模式——整座工厂随你支配" }
+}

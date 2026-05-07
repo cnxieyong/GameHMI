@@ -1,0 +1,19 @@
+{
+  "id": "24",
+  "title": "数据一直来",
+  "scene": {
+    "narrative": "老陈指着屏幕下方闪烁的指示灯：\"看到没？设备不是等你问了才回——它每100毫秒自动上报一次数据。你不能用 ReadLine 在那傻等，得用事件来收。数据来了自动触发处理，不漏任何一条。\"\n\n\"在 C# 里这就是事件机制。虽然咱们的模拟串口简化了，但你可以用 while 循环持续读取直到没有新数据为止——模拟'事件驱动'的思想。\"",
+    "task": "打开串口后，用 while 循环持续调用 ReadLine() 读取数据（返回 null 表示没数据了），直到读完所有数据。每读到一行就 Print。最后统计一共读了多少行。"
+  },
+  "concepts": ["轮询读取", "while 循环接收", "null 判断"],
+  "factory": { "layout": "single_device", "serialResponse": "T=25.5\nT=25.6\nT=25.8\nT=26.0\nT=26.3\n", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }] },
+  "template": "// 设备每隔 100ms 自动上报温度，用 while 循环读完所有数据\n\n// TODO 1: 打开串口\n\n\n// TODO 2: 计数器 int count = 0\n\n\n// TODO 3: while 循环，每次 ReadLine()，如果是 null 就 break\n//    否则计数 +1 并 Print\n\n{\n\n\n\n\n}\n\n// TODO 4: Print 总共读取的行数\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "string? line; while ((line = Serial.ReadLine()) != null) { count++; Print(line); } —— 这叫'读完了就没'" },
+    { "level": 2, "text": "ReadLine() 没数据时返回 null。把它做 while 条件：while ((line = Serial.ReadLine()) != null)" },
+    { "level": 3, "text": "Serial.Open();\nint count = 0;\nstring? line;\nwhile ((line = Serial.ReadLine()) != null)\n{\n    count++;\n    Print($\"[{count}] {line}\");\n}\nPrint($\"共接收 {count} 条数据\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "共接收" },
+  "achievement": { "id": "first_poll", "name": "数据流接收", "description": "第一次用 while 循环持续接收数据流" }
+}

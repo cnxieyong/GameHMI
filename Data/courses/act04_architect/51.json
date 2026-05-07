@@ -1,0 +1,15 @@
+{
+  "id": "51", "title": "设备类型越来越多",
+  "scene": { "narrative": "车间现在有 8 种设备：温度传感器、压力传感器、电机、气缸、PLC、变频器、温控表、光电开关。每种设备都有 Id 和 Name，但操作不同。老陈说：\"抽一个 Device 基类，放 Id 和 Name 这些公共属性。子类继承基类，再加自己特有的方法和属性——温度传感器加 ReadTemp()，电机加 Start()/Stop()。这就是面向对象的继承体系。\"", "task": "定义抽象基类 Device（Id, Name, 抽象方法 Check()）。让 TempSensor 和 Motor 两个子类继承并实现 Check()。测试：创建 List<Device>，放入两个子类实例，foreach 调用 Check()——多态。" },
+  "concepts": ["抽象类", "继承", "多态", "abstract/override"],
+  "factory": { "layout": "single_device", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "设备架构测试", "temp": 25.5 }] },
+  "template": "// 设备继承体系——基类 + 子类\n\n// TODO 1: 定义抽象基类 Device\n//   public string Id, Name\n//   public abstract void Check()\n\n\n{\n\n\n\n\n}\n\n// TODO 2: TempSensor : Device，Check() 打印温度\n\n\n{\n\n\n\n\n}\n\n// TODO 3: Motor : Device，Check() 打印状态\n\n\n{\n\n\n\n\n}\n\n// TODO 4: 创建两个实例，放进 List<Device>，foreach Check()\n\n\n\n\n\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "abstract class Device { public string Id; public string Name; public abstract void Check(); }" },
+    { "level": 2, "text": "class TempSensor : Device { public override void Check() { Print($\"{Name}: {SensorTemp}°C\"); } }" },
+    { "level": 3, "text": "abstract class Device { public string Id; public string Name; public abstract string GetStatus(); }\n\nclass TempSensor : Device\n{ public override string GetStatus() { return $\"{Name}: 正常\"; } }\n\nclass Motor : Device\n{ public override string GetStatus() { return $\"{Name}: 停止\"; } }\n\nvar devices = new List<Device>();\nvar t = new TempSensor { Id=\"T1\", Name=\"温度传感器\" };\nvar m = new Motor { Id=\"M1\", Name=\"电机\" };\ndevices.Add(t); devices.Add(m);\nforeach (var d in devices) Print(d.GetStatus());" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "停止" },
+  "achievement": { "id": "abstract_class", "name": "继承体系", "description": "第一次用抽象类构建设备继承体系" }
+}

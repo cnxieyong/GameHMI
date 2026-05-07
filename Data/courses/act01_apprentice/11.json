@@ -1,0 +1,33 @@
+{
+  "id": "11",
+  "title": "多台烘干箱同时工作",
+  "scene": {
+    "narrative": "车间扩建了！厂长指着三台新烘干箱：\"现在三条产线同时跑，你得同时盯三台设备的温度。\"老陈在旁边提醒：\"上次学的 List 还记得吗？这次不是存温度数字，是存整个对象——每台烘干箱都是一个 DryerBox 实例。用 List<DryerBox> 管三台，foreach 遍历一遍全检查完。\"",
+    "task": "用关 10 的 DryerBox 类（有 TargetTemp 和 CurrentTemp），创建 3 个实例分别代表 A/B/C 三条线，放进 List<DryerBox>，用 foreach 遍历打印每条线的目标温度和当前温度。"
+  },
+  "concepts": ["List<对象>", "foreach", "对象引用", "批量管理"],
+  "factory": {
+    "layout": "multi_device",
+    "devices": [
+      { "type": "DryerBox", "id": "line_a", "label": "A线烘干箱", "temp": 85.0 },
+      { "type": "DryerBox", "id": "line_b", "label": "B线烘干箱", "temp": 92.0 },
+      { "type": "DryerBox", "id": "line_c", "label": "C线烘干箱", "temp": 78.0 }
+    ]
+  },
+  "template": "// 三条产线，三台烘干箱，用 List 统一管理\n\n// TODO 1: 先把 DryerBox 类定义好（和关10一样）\nclass DryerBox\n{\n\n\n\n\n}\n\n// TODO 2: 创建三个实例: lineA(85), lineB(92), lineC(78)\n\n\n\n\n// TODO 3: 分别设置它们的 CurrentTemp\n\n\n\n\n// TODO 4: 创建一个 List<DryerBox> lines = new List<DryerBox>();\n\n\n// TODO 5: 把三个实例 .Add() 进去\n\n\n\n\n// TODO 6: foreach 遍历 lines，打印每条线的目标温度和当前温度\n\n{\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "类的定义和关10一样: class DryerBox { public double TargetTemp { get; } public double CurrentTemp { get; set; } public DryerBox(double t) { TargetTemp = t; } }" },
+    { "level": 2, "text": "创建: var lineA = new DryerBox(85); lineA.CurrentTemp = 84.2; 添加到 List: lines.Add(lineA);" },
+    { "level": 3, "text": "class DryerBox { public double TargetTemp { get; } public double CurrentTemp { get; set; } public DryerBox(double t) { TargetTemp = t; } }\n\nvar lineA = new DryerBox(85); lineA.CurrentTemp = 84.2;\nvar lineB = new DryerBox(92); lineB.CurrentTemp = 91.8;\nvar lineC = new DryerBox(78); lineC.CurrentTemp = 77.5;\n\nvar lines = new List<DryerBox>();\nlines.Add(lineA); lines.Add(lineB); lines.Add(lineC);\n\nforeach (var line in lines)\n    Print($\"目标:{line.TargetTemp}°C 当前:{line.CurrentTemp}°C\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "92"
+  },
+  "achievement": {
+    "id": "list_objects",
+    "name": "对象集合",
+    "description": "第一次用 List 管理多个对象"
+  }
+}

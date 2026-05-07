@@ -1,0 +1,15 @@
+{
+  "id": "39", "title": "分拣系统",
+  "scene": { "narrative": "传送带上工件经过光电传感器，需要按大小分拣：高度 > 100mm 的走 A 通道（线圈 20 推），<= 100mm 的走 B 通道（线圈 21 推）。\"PLC 寄存器 200 存了当前工件高度值（单位 mm），你读出来判断，决定推哪个气缸。这就是工业分拣的基本逻辑。\"", "task": "读寄存器 200 获取工件高度。如果 > 100 写线圈 20=true（A通道），否则写线圈 21=true（B通道）。同时打印分拣结果。" },
+  "concepts": ["工业分拣", "寄存器判断", "多路控制"],
+  "factory": { "layout": "single_device", "plcRegisters": { "200": 125 }, "plcCoils": { "20": false, "21": false }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 工件高度在寄存器200，>100mm 走A通道，否则走B通道\n\n// TODO 1: 读取寄存器 200 的值\n\n\n// TODO 2: if 判断高度 > 100\n\n{\n    // TODO 3: 写线圈20 = true (A通道)，Print 分拣结果\n\n\n\n}\n\n{\n    // TODO 4: else 写线圈21 = true (B通道)，Print 分拣结果\n\n\n\n}\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "ushort height = Plc.ReadHoldingRegister(200); if (height > 100) { Plc.WriteCoil(20, true); Print($\"高度{height}→A通道\"); }" },
+    { "level": 2, "text": "else 分支写线圈 21 = true。记住：ushort 不需要除以10，这里单位是 mm。" },
+    { "level": 3, "text": "ushort height = Plc.ReadHoldingRegister(200);\nif (height > 100)\n{\n    Plc.WriteCoil(20, true);\n    Print($\"高度 {height}mm → A通道(大件)\");\n}\nelse\n{\n    Plc.WriteCoil(21, true);\n    Print($\"高度 {height}mm → B通道(小件)\");\n}" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "A通道" },
+  "achievement": { "id": "sorting", "name": "自动分拣", "description": "第一次实现基于传感器数据的自动分拣" }
+}

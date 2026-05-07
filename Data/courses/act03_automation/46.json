@@ -1,0 +1,15 @@
+{
+  "id": "46", "title": "查历史数据",
+  "scene": { "narrative": "厂长：\"上个月 15 号 A 产品那批产量多少？\"你要从一堆记录里翻。老陈教你在数据上做查询：\"用 foreach 遍历所有记录，加 where 条件过滤。这在数据库里就是 SQL 的 WHERE 子句——'SELECT * FROM records WHERE Date = 15 AND Product = A'。你得学会这种思维——在数据堆里按条件找东西。\"", "task": "用上关的 ProductionRecord 类，创建 6 条模拟记录（两个产品、三个日期）。写三个查询：1) 查 5/2 的数据 2) 查 A 产品的数据 3) 查产量 > 1100 的数据。分别打印查询结果。" },
+  "concepts": ["数据查询", "WHERE条件", "过滤统计"],
+  "factory": { "layout": "single_device", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 25.5 }] },
+  "template": "// 在记录列表里按条件查询数据\n\n// TODO 1: 定义记录类（Date, Product, Qty），创建6条记录\n\nclass Record { public string Date; public string Product; public int Qty; public Record(string d, string p, int q) { Date=d; Product=p; Qty=q; } }\n\n\n\n// TODO 2: 存入 List\n\n\n\n// TODO 3: 查询1 — 查日期 \"5/2\" 的记录\nPrint(\"--- 5/2 的数据 ---\");\n\n\n\n// TODO 4: 查询2 — 查产品 \"A\" 的记录\nPrint(\"--- A产品 ---\");\n\n\n\n// TODO 5: 查询3 — 查产量 > 1100 的记录\nPrint(\"--- 产量>1100 ---\");\n\n\n\nPrint(\"查询完成\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "三个 foreach，每个用 if 做不同条件过滤。日期用 == 比较，数值用 > 比较。" },
+    { "level": 2, "text": "foreach (var r in records) { if (r.Date == \"5/2\") Print(...); }" },
+    { "level": 3, "text": "class Record { public string Date; public string Product; public int Qty; public Record(string d, string p, int q) { Date=d; Product=p; Qty=q; } }\nvar records = new List<Record>();\nrecords.Add(new Record(\"5/1\", \"A\", 1000));\nrecords.Add(new Record(\"5/1\", \"B\", 800));\nrecords.Add(new Record(\"5/2\", \"A\", 1200));\nrecords.Add(new Record(\"5/2\", \"B\", 900));\nrecords.Add(new Record(\"5/3\", \"A\", 1100));\nrecords.Add(new Record(\"5/3\", \"B\", 1300));\n\nPrint(\"--- 5/2 ---\");\nforeach (var r in records)\n    if (r.Date == \"5/2\") Print($\"{r.Date} {r.Product}: {r.Qty}\");\nPrint(\"--- A ---\");\nforeach (var r in records)\n    if (r.Product == \"A\") Print($\"{r.Date} {r.Product}: {r.Qty}\");\nPrint(\"--- Qty>1100 ---\");\nforeach (var r in records)\n    if (r.Qty > 1100) Print($\"{r.Date} {r.Product}: {r.Qty}\");\nPrint(\"查询完成\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "查询完成" },
+  "achievement": { "id": "query", "name": "数据查询", "description": "第一次对数据集进行条件查询" }
+}

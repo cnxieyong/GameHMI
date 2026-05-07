@@ -1,0 +1,15 @@
+{
+  "id": "49", "title": "定时自动巡检",
+  "scene": { "narrative": "老陈指着排班表：\"以前每个小时要有人巡检一次产线——看温度、查电机、记数据。现在学了 PLC，你可以让程序自动定时巡检。用 for 循环模拟 24 小时巡检（每次循环代表1小时），每小时读一次 PLC 关键寄存器，如果发现异常就报警。这就是定时任务的概念。\"", "task": "模拟 24 小时自动巡检：每小时读一次 PLC 温度（寄存器 100），判断是否超标（>300），如果超标就报警计数+1。最后打印巡检报告：总巡检次数、报警次数、正常运行率。" },
+  "concepts": ["定时任务", "自动巡检", "运行率计算"],
+  "factory": { "layout": "single_device", "plcRegisters": { "100": 280 }, "devices": [{ "type": "DryerBox", "id": "dryer", "label": "PLC控制柜", "temp": 28.0 }] },
+  "template": "// 24小时自动巡检系统\n\n// TODO 1: 变量 alarms = 0, checks = 0\n\n\n\n// TODO 2: for 循环 24 次（模拟24小时）\n\n{\n    // TODO 3: 读温度，checks++\n\n\n    // TODO 4: if 温度 > 300 (即 > 30.0°C) → alarms++, Print \"报警\"\n    //    else → 继续\n\n\n\n    // TODO 5: 每次温度递增2（模拟缓慢升温）\n\n\n\n}\n\n// TODO 6: 打印巡检报告\n\n\n\n\nPrint(\"巡检完成\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "ushort temp = Plc.ReadHoldingRegister(100); if (temp > 300) { alarms++; Print($\"小时{hour}: 报警! {temp/10.0}°C\"); }" },
+    { "level": 2, "text": "正常运行率 = (checks - alarms) * 100.0 / checks。" },
+    { "level": 3, "text": "int alarms = 0;\nfor (int h = 1; h <= 24; h++)\n{\n    ushort temp = Plc.ReadHoldingRegister(100);\n    if (temp > 300) { alarms++; Print($\"{h}:00 报警! {temp/10.0:F1}°C\"); }\n    Plc.WriteHoldingRegister(100, (ushort)(temp + 2));\n}\nPrint($\"总巡检24次，报警{alarms}次，正常率{(24-alarms)*100.0/24:F1}%\");\nPrint(\"巡检完成\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "巡检完成" },
+  "achievement": { "id": "auto_patrol", "name": "自动巡检", "description": "第一次实现定时自动巡检系统" }
+}

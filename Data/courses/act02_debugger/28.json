@@ -1,0 +1,15 @@
+{
+  "id": "28", "title": "字节级数据帧",
+  "scene": { "narrative": "老陈拿出一份协议规格书：\"有些设备不传文字，传的是二进制帧——帧头 AA BB，第3字节是数据长度，后面是数据，最后是校验。你得按字节解析，不能用 Split。\"\n\n\"虽然我们模拟的是文字串口，但你得学会'帧'的概念——每条数据有固定格式：帧头+长度+数据+校验。从字符串里切出各段，验证帧头是否正确。\"", "task": "串口返回 3 条帧格式数据：'[FRM]2,T=25.5,OK' 和 '[FRM]2,T=30.1,OK'。用 Split 和 if 解析每条帧，检查帧头是否 '[FRM]'，提取温度值打印。" },
+  "concepts": ["数据帧", "帧头校验", "结构化解析"],
+  "factory": { "layout": "single_device", "serialResponse": "[FRM]2,T=25.5,OK\n[FRM]2,T=30.1,OK\n[ERR]2,T=99,FAIL\n", "devices": [{ "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }] },
+  "template": "// 帧格式: [FRM]长度,数据,校验\n// 帧头 [FRM] 才是有效数据，[ERR] 是错误帧要丢弃\n\n// TODO 1: 打开串口，while 循环读取\n\n{\n    // TODO 2: if 判断是否以 \"[FRM]\" 开头（用 StartsWith）\n    //   如果是：提取帧内容并 Print\n    //   如果不是：Print \"错误帧，丢弃\"\n\n\n\n\n\n\n}\n\nPrint(\"帧解析完成\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "line.StartsWith(\"[FRM]\") 判断有效帧。无效的打印'错误帧，丢弃'继续读下一条。" },
+    { "level": 2, "text": "while ((line = Serial.ReadLine()) != null) { if (line.StartsWith(\"[FRM]\")) Print($\"有效: {line}\"); else Print(\"错误帧，丢弃\"); }" },
+    { "level": 3, "text": "Serial.Open();\nstring? line;\nwhile ((line = Serial.ReadLine()) != null)\n{\n    if (line.StartsWith(\"[FRM]\"))\n    {\n        var parts = line.Split(',');\n        Print($\"温度: {parts[1]}\");\n    }\n    else\n        Print(\"错误帧，丢弃\");\n}\nPrint(\"帧解析完成\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "帧解析完成" },
+  "achievement": { "id": "framing", "name": "帧解析", "description": "第一次按帧格式解析通讯数据" }
+}

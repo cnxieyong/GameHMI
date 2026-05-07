@@ -1,0 +1,18 @@
+{
+  "id": "50", "title": "阶段考核：全自动产线",
+  "scene": { "narrative": "厂长亲自考核：\"三个月了，今天给你一条完整产线。三段工位（烘干、传送、包装），3个 PLC 地址段。你要自动巡检所有工位、发现异常自动降速、记录产量、生成报表。这是从'调试员'到'工程师'的最后一步。\"", "task": "设计全自动产线控制系统：1) 定义3段工位 2) 逐段巡检温度 3) 超标自动降速 4) 统计产量 5) 输出报表。通过就晋升自动化工程师。" },
+  "concepts": ["综合考核", "多工位", "自动控制", "报表"],
+  "factory": { "layout": "multi_device", "plcRegisters": { "100": 280, "200": 310, "300": 250, "400": 0 }, "devices": [
+    { "type": "DryerBox", "id": "s1", "label": "烘干段", "temp": 28.0 },
+    { "type": "DryerBox", "id": "s2", "label": "传送段", "temp": 31.0 }
+  ]},
+  "template": "// ===== 全自动产线控制系统 =====\n// 3段工位，自动巡检，异常处理，产量报表\n\n// TODO 1: 定义工位数组: string[] stations = {\"烘干\", \"传送\", \"包装\"};\n//   对应寄存器: int[] addr = {100, 200, 300};\n\n\n\n// TODO 2: 变量 alarms=0, totalQty=0\n\n\n// TODO 3: 模拟产量计数器（寄存器400初始=0，模拟生产10件）\n\n\n\n// TODO 4: foreach 巡检3段工位温度\n//   温度>300(30°C) → alarms++, Print \"工位X异常\"\n//   否则 Print \"工位X正常\"\n\n\n\n\n{\n\n}\n\n// TODO 5: 打印产量统计\n\n\n\n// TODO 6: 打印报表总结\n\n\n\n\nPrint(\"===== 自动产线报表完成 =====\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "string[] stations = {\"烘干\", \"传送\", \"包装\"}; int[] addrs = {100, 200, 300}; for (int i=0; i<3; i++) { var t = Plc.ReadHoldingRegister(addrs[i]); ... }" },
+    { "level": 2, "text": "产量: for 10 件产品: totalQty++; Plc.WriteHoldingRegister(400, (ushort)totalQty); 报表: Print($\"巡检3段, 异常{alarms}段, 产量{totalQty}件\");" },
+    { "level": 3, "text": "string[] stations = { \"烘干\", \"传送\", \"包装\" };\nint[] addrs = { 100, 200, 300 };\nint alarms = 0, totalQty = 0;\nfor (int p = 0; p < 10; p++) { totalQty++; Plc.WriteHoldingRegister(400, (ushort)totalQty); }\nforeach (var a in addrs) {\n    ushort t = Plc.ReadHoldingRegister(a);\n    if (t > 300) { alarms++; Print(\"工位异常\"); }\n    else Print(\"工位正常\");\n}\nPrint($\"巡检完成, 异常{alarms}段, 产量{totalQty}件\");\nPrint(\"===== 自动产线报表完成 =====\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "报表完成" },
+  "achievement": { "id": "act3_clear", "name": "自动化工程师晋升", "description": "完成第三幕全部关卡，晋升为系统架构师" }
+}

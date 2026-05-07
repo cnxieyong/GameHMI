@@ -1,0 +1,19 @@
+{
+  "id": "63", "title": "多产线并行调度",
+  "scene": { "narrative": "工厂接了大单——三条产线要同时跑不同产品。A线做标准件，B线做定制件，C线做急单。\"资源有限——传送带只有一条，三条线要轮流用。你来写调度算法：按优先级排（C线最高→B线→A线），高优先级的先用传送带，用完释放给下一家。\"", "task": "三条产线有不同优先级（C=3, B=2, A=1）。用结构化数据存每条线的信息，按优先级排序后依次'分配传送带资源'。每条线打印'X线获得传送带，运行中...'然后'释放传送带'。" },
+  "concepts": ["优先级调度", "资源分配", "并发概念"],
+  "factory": { "layout": "multi_device", "devices": [
+    { "type": "DryerBox", "id": "a", "label": "A线(标准件)", "temp": 25.0 },
+    { "type": "DryerBox", "id": "b", "label": "B线(定制件)", "temp": 28.0 },
+    { "type": "DryerBox", "id": "c", "label": "C线(急单)", "temp": 30.0 }
+  ]},
+  "template": "// 三条产线，一条传送带——按优先级调度\n\n// TODO 1: 定义产线数据: string[] names = {\"C线(急单)\", \"B线(定制)\", \"A线(标准)\"};\n//   对应优先级 int[] prio = {3, 2, 1};\n\n\n\n// TODO 2: 数组已按优先级从高到低排好了，for 循环遍历\n\n{\n    // TODO 3: Print \"X线获得传送带\"\n\n\n    // TODO 4: Print \"X线运行中...\"\n\n\n    // TODO 5: Print \"X线释放传送带\"\n\n\n}\n\nPrint(\"===== 调度完成 =====\");\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "for (int i = 0; i < 3; i++) { Print($\"{names[i]} P{prio[i]}→获得传送带\"); Print($\"{names[i]} 运行中...\"); Print($\"{names[i]} 释放传送带\"); }" },
+    { "level": 2, "text": "调度顺序: C(急单)先→B(定制)→A(标准)。高优先级不阻塞低优先级太久。" },
+    { "level": 3, "text": "string[] names = { \"C线(急单)\", \"B线(定制)\", \"A线(标准)\" };\nint[] prio = { 3, 2, 1 };\n\nfor (int i = 0; i < 3; i++) {\n    Print($\"P{prio[i]} {names[i]} → 获得传送带\");\n    Print($\"  {names[i]} 运行中...\");\n    Print($\"  {names[i]} → 释放传送带\");\n}\nPrint(\"===== 调度完成 =====\");" }
+  ],
+  "winCondition": { "type": "console_contains", "value": "调度完成" },
+  "achievement": { "id": "scheduler", "name": "产线调度", "description": "第一次实现多产线优先级调度" }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "01",
+  "title": "上班第一天",
+  "scene": {
+    "narrative": "师傅老陈是车间里资历最老的工人，花白的头发上沾着机油。他看到你来，摘下满是划痕的护目镜：\n\n\"小伙子，欢迎来到智造工厂。咱们这儿设备有点老了，但都是宝贝。烘干箱、传送带、温控表……它们不会说话，但都能告诉你很多信息——你得学会问它们。\"\n\n老陈指着墙上的工控机屏幕：\"这就是你的工作台，在这上面写指令，设备就会回应你。先试试最简单的：让烘干箱报一下自己的状态。\"",
+    "task": "在代码编辑器中用 Print() 输出烘干箱的当前温度和电机的运行状态。模板已经写了温度那一行，你只需要补上电机状态。"
+  },
+  "concepts": ["Print()", "字符串", "变量引用"],
+  "factory": {
+    "layout": "single_device",
+    "devices": [
+      { "type": "DryerBox", "id": "dryer", "label": "烘干箱 #1", "temp": 25.5 }
+    ]
+  },
+  "template": "// 打印烘干箱的当前状态\nPrint($\"🌡 烘干箱温度: {SensorTemp}°C\");\n\n// TODO: 用同样的方法，打印电机状态\n// 提示: 使用变量 MotorRunning (true=运行中, false=已停止)\n\n",
+  "maxRuntimeMs": 5000,
+  "hints": [
+    { "level": 1, "text": "观察第一行代码的写法。用 Print() 把文字拼起来，$ 符号可以把大括号里的变量值自动替换进去" },
+    { "level": 2, "text": "在 TODO 下面写:\nPrint($\"⚙ 电机状态: {(MotorRunning ? \"运行中\" : \"已停止\")}\");" },
+    { "level": 3, "text": "Print($\"🌡 烘干箱温度: {SensorTemp}°C\");\nPrint($\"⚙ 电机状态: {(MotorRunning ? \"运行中\" : \"已停止\")}\");" }
+  ],
+  "winCondition": {
+    "type": "console_contains",
+    "value": "电机"
+  },
+  "achievement": {
+    "id": "first_print",
+    "name": "第一行指令",
+    "description": "完成你的第一次设备查询"
+  }
+}
